@@ -10,6 +10,9 @@ localhost/bitmania.htmlにアクセスする
 入力は8つ（7鍵盤＋皿を想定）
 
 ## ゲームモード
+* demo
+キーボード入力結果を画面に表示する
+
 * stairs challenge
 制限時間以内にできるだけ多く階段を入力する
 * rhythm patterm
