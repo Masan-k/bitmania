@@ -17,140 +17,164 @@
   </form>
 
   <canvas id="cvs" width="300px" height="500px"></canvas>
+
 <script>
+
   const canvas = document.getElementById("cvs");
   const ctx = canvas.getContext("2d");
 
+  //canvas全体
   ctx.fillStyle = "black";
   ctx.fillRect(0,0,500,500);
 
+  //input key
   ctx.strokeStyle = "red";
-  ctx.strokeRect(10,canvas.height -50,20,40);
+  ctx.strokeRect(30,canvas.height -50,20,40);
   ctx.strokeStyle = "white";
-  ctx.strokeRect(10+30*1,canvas.height -50,20,40);
+  ctx.strokeRect(30+30*1,canvas.height -50,20,40);
   ctx.strokeStyle = "blue";
-  ctx.strokeRect(10+30*2,canvas.height -50,20,40);
+  ctx.strokeRect(30+30*2,canvas.height -50,20,40);
   ctx.strokeStyle = "white";
-  ctx.strokeRect(10+30*3,canvas.height -50,20,40);
+  ctx.strokeRect(30+30*3,canvas.height -50,20,40);
   ctx.strokeStyle = "blue";
-  ctx.strokeRect(10+30*4,canvas.height -50,20,40);
+  ctx.strokeRect(30+30*4,canvas.height -50,20,40);
   ctx.strokeStyle = "white";
-  ctx.strokeRect(10+30*5,canvas.height -50,20,40);
+  ctx.strokeRect(30+30*5,canvas.height -50,20,40);
   ctx.strokeStyle = "blue";
-  ctx.strokeRect(10+30*6,canvas.height -50,20,40);
+  ctx.strokeRect(30+30*6,canvas.height -50,20,40);
   ctx.strokeStyle = "white";
-  ctx.strokeRect(10+30*7,canvas.height -50,20,40);
+  ctx.strokeRect(30+30*7,canvas.height -50,20,40);
 
+  //フレームの描画
+  ctx.strokeStyle = "grey";
+  ctx.lineWidth = 0.5;
+  ctx.strokeRect(25,30,240,420);
+
+  for(let i = 1; i<8; i++){
+    ctx.moveTo(25+30*i,30+420);
+    ctx.lineTo(25+30*i,30);
+  }
+  ctx.stroke()
+  
   document.addEventListener('keydown', keydown_event);
   //document.addEventListener('keypress', keypress_event);
   document.addEventListener('keyup', keyup_event);
 
-function keydown_event(e){
-  console.log("keydown:" + e.key);
-  if(e.key == "Shift"){
-    ctx.fillStyle = "red";
-    ctx.fillRect(10+30*0,canvas.height -50,20,40);
+  let testY = 0
+  const testDraw=()=>{
+    ctx.moveTo(25,30+420-testY);
+    ctx.lineTo(25+30,30+420-testY);
+    testY = testY+1;
+    ctx.stroke()
+    requestAnimationFrame(testDraw);
   }
-  if(e.keyCode === 32){
-    e.preventDefault();
-  }
-  switch (e.key.toLowerCase()){
-    case "z":
-      ctx.fillStyle = "white";
-      ctx.fillRect(10+30*1,canvas.height -50,20,40);
-      break;
-
-    case "x":
-      ctx.fillStyle = "blue";
-      ctx.fillRect(10+30*2,canvas.height -50,20,40);
-      break;
-
-    case "c":
-      ctx.fillStyle = "white";
-      ctx.fillRect(10+30*3,canvas.height -50,20,40);
-      break;
-
-    case " ":
-      ctx.fillStyle = "blue";
-      ctx.fillRect(10+30*4,canvas.height -50,20,40);
-      break;
- 
-    case "j":
-      ctx.fillStyle = "white";
-      ctx.fillRect(10+30*5,canvas.height -50,20,40);
-      break;
-    case "k":
-      ctx.fillStyle = "blue";
-      ctx.fillRect(10+30*6,canvas.height -50,20,40);
-      break;
-
-    case "l":
-      ctx.fillStyle = "white";
-      ctx.fillRect(10+30*7,canvas.height -50,20,40);
-      break;
-  }
-}
-
-function keyup_event(e){
-  console.log("keyup:"+e.key);
-  switch (e.key.toLowerCase()){
-    case "shift":
-      ctx.fillStyle = "black";
-      ctx.fillRect(10+30*0,canvas.height -50,20,40);
-      ctx.strokeStyle = "red";
-      ctx.strokeRect(10+30*0,canvas.height -50,20,40);
-      break;
-    
-    case "z":
-      ctx.fillStyle = "black";
-      ctx.fillRect(10+30*1,canvas.height -50,20,40);
-      ctx.strokeStyle = "white";
-      ctx.strokeRect(10+30*1,canvas.height -50,20,40);
-      break;
-
-    case "x":
-      ctx.fillStyle = "black";
-      ctx.fillRect(10+30*2,canvas.height -50,20,40);
-      ctx.strokeStyle = "blue";
-      ctx.strokeRect(10+30*2,canvas.height -50,20,40);
-      break;
-
-    case "c":
-      ctx.fillStyle = "black";
-      ctx.fillRect(10+30*3,canvas.height -50,20,40);
-      ctx.strokeStyle = "white";
-      ctx.strokeRect(10+30*3,canvas.height -50,20,40);
-      break;
-
-    case " ": 
-      ctx.fillStyle = "black";
-      ctx.fillRect(10+30*4,canvas.height -50,20,40);
-      ctx.strokeStyle = "blue";
-      ctx.strokeRect(10+30*4,canvas.height -50,20,40);
-      break;
-
-    case "j": 
-      ctx.fillStyle = "black";
-      ctx.fillRect(10+30*5,canvas.height -50,20,40);
-      ctx.strokeStyle = "white";
-      ctx.strokeRect(10+30*5,canvas.height -50,20,40);
-      break;
-    
-    case "k": 
-      ctx.fillStyle = "black";
-      ctx.fillRect(10+30*6,canvas.height -50,20,40);
-      ctx.strokeStyle = "blue";
-      ctx.strokeRect(10+30*6,canvas.height -50,20,40);
-      break;
-    
-    case "l": 
-      ctx.fillStyle = "black";
-      ctx.fillRect(10+30*7,canvas.height -50,20,40);
-      ctx.strokeStyle = "white";
-      ctx.strokeRect(10+30*7,canvas.height -50,20,40);
-      break;
+  testDraw();
+  function keydown_event(e){
+    console.log("keydown:" + e.key);
+    if(e.key == "Shift"){
+      ctx.fillStyle = "red";
+      ctx.fillRect(30+30*0,canvas.height -50,20,40);
     }
-}
+    if(e.keyCode === 32){
+      e.preventDefault();
+    }
+    switch (e.key.toLowerCase()){
+      case "z":
+        ctx.fillStyle = "white";
+        ctx.fillRect(30+30*1,canvas.height -50,20,40);
+        break;
+
+      case "x":
+        ctx.fillStyle = "blue";
+        ctx.fillRect(30+30*2,canvas.height -50,20,40);
+        break;
+
+      case "c":
+        ctx.fillStyle = "white";
+        ctx.fillRect(30+30*3,canvas.height -50,20,40);
+        break;
+
+      case " ":
+        ctx.fillStyle = "blue";
+        ctx.fillRect(30+30*4,canvas.height -50,20,40);
+        break;
+   
+      case "j":
+        ctx.fillStyle = "white";
+        ctx.fillRect(30+30*5,canvas.height -50,20,40);
+        break;
+      case "k":
+        ctx.fillStyle = "blue";
+        ctx.fillRect(30+30*6,canvas.height -50,20,40);
+        break;
+
+      case "l":
+        ctx.fillStyle = "white";
+        ctx.fillRect(30+30*7,canvas.height -50,20,40);
+        break;
+    }
+  }
+
+  function keyup_event(e){
+    console.log("keyup:"+e.key);
+    switch (e.key.toLowerCase()){
+      case "shift":
+        ctx.fillStyle = "black";
+        ctx.fillRect(30+30*0,canvas.height -50,20,40);
+        ctx.strokeStyle = "red";
+        ctx.strokeRect(30+30*0,canvas.height -50,20,40);
+        break;
+      
+      case "z":
+        ctx.fillStyle = "black";
+        ctx.fillRect(30+30*1,canvas.height -50,20,40);
+        ctx.strokeStyle = "white";
+        ctx.strokeRect(30+30*1,canvas.height -50,20,40);
+        break;
+
+      case "x":
+        ctx.fillStyle = "black";
+        ctx.fillRect(30+30*2,canvas.height -50,20,40);
+        ctx.strokeStyle = "blue";
+        ctx.strokeRect(30+30*2,canvas.height -50,20,40);
+        break;
+
+      case "c":
+        ctx.fillStyle = "black";
+        ctx.fillRect(30+30*3,canvas.height -50,20,40);
+        ctx.strokeStyle = "white";
+        ctx.strokeRect(30+30*3,canvas.height -50,20,40);
+        break;
+
+      case " ": 
+        ctx.fillStyle = "black";
+        ctx.fillRect(30+30*4,canvas.height -50,20,40);
+        ctx.strokeStyle = "blue";
+        ctx.strokeRect(30+30*4,canvas.height -50,20,40);
+        break;
+
+      case "j": 
+        ctx.fillStyle = "black";
+        ctx.fillRect(30+30*5,canvas.height -50,20,40);
+        ctx.strokeStyle = "white";
+        ctx.strokeRect(30+30*5,canvas.height -50,20,40);
+        break;
+      
+      case "k": 
+        ctx.fillStyle = "black";
+        ctx.fillRect(30+30*6,canvas.height -50,20,40);
+        ctx.strokeStyle = "blue";
+        ctx.strokeRect(30+30*6,canvas.height -50,20,40);
+        break;
+      
+      case "l": 
+        ctx.fillStyle = "black";
+        ctx.fillRect(30+30*7,canvas.height -50,20,40);
+        ctx.strokeStyle = "white";
+        ctx.strokeRect(30+30*7,canvas.height -50,20,40);
+        break;
+      }
+  }
 </script>
 
 <h2>KEYBORD</h2>
