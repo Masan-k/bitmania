@@ -1,8 +1,21 @@
 * PHPの学習のためWebアプリケーション
 * html+JavaScript+PHP,DB(MySQL)
 
-# question
+# q 
 * 画像を表示する...canvas
+
+* A demoの実装
+  - フレームの描画(白の細い線)
+    - input keyのサイズ（width:20,height:40)
+    - input keyの幅（width:30)
+
+  - bpmを反映させたフレームの移動処理
+    - 60bpm...1分間に4分音符を60回鳴らす速さ
+    - canvasのサイズ(width:300px  height:500px)
+    - フレームの高さは420
+    - スピードの調整はよしなに
+    - 1秒ごとに白線が入力に当たるようにする
+
 
 # task
 * A 時間を表示する
@@ -12,7 +25,6 @@
 * A ゲーム画面構成：rhythm pattern
 * A キーボードの入力を記録する
 * B キーボード入力設定を保持する 
-
 
 # fature
 * C 記録をサーバに送る機能
