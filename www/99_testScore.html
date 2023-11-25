@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>bitmania</title>
+  <style>
+    .custom-input{width: 50px;}
+    body{ font-family: Arial, sans-serif;}
+  </style>
+</head>
+<body>
+  <h1>DEMO</h1>
+  <form>
+    <label for="txtBpm">bpm:</label>
+    <input type="text" id="txtBpm" name="txtBpm" value="60" class="custom-input" >
+    <input type="submit" value="submit">
+  </form>
+
+  <canvas id="cvs" width="300px" height="500px"></canvas>
+  <canvas id="cvsTempo" width="100px" height="300px"></canvas>
+
+<script>
+
+  const canvas = document.getElementById("cvs");
+  const ctx = canvas.getContext("2d");
+
+  //canvas全体
+  ctx.fillStyle = "black";
+  ctx.fillRect(0,0,500,500);
+
+  //Tempo
+  const canvasTempo = document.getElementById("cvsTempo");
+  const ctxTempo = canvasTempo.getContext("2d");
+
+  ctxTempo.fillStyle = "black";
+  ctxTempo.fillRect(0,0,100,300);
+  ctxTempo.strokeStyle = "red";
+
+  for(let i = 1; i<=4; i++){
+    ctxTempo.strokeRect(25,50*i,50,50);
+  }
+
+  //time
+  let stopwatch = setInterval(updateDisplay, 1000);
+  let seconds = -1;
+
+  function updateDisplay() {
+    seconds++;
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+
+    const displayString =
+      `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+    console.log(displayString);
+
+    if(seconds%4 === 0){
+      ctxTempo.fillStyle = "black";
+      ctxTempo.fillRect(25,50,50,50*4);
+        
+      for(let i = 1; i<=4; i++){
+        ctxTempo.strokeRect(25,50*i,50,50);
+      }
+    }
+    ctxTempo.fillStyle = "red";
+    ctxTempo.fillRect(25,200-(50*(seconds%4)),50,50);
+    //document.getElementById('display').innerText = displayString;
+  }
+
+  //input key
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = "red";
+  ctx.strokeRect(30,canvas.height -50,20,40);
+  ctx.strokeStyle = "white";
+  ctx.strokeRect(30+30*1,canvas.height -50,20,40);
+  ctx.strokeStyle = "blue";
+  ctx.strokeRect(30+30*2,canvas.height -50,20,40);
+  ctx.strokeStyle = "white";
+  ctx.strokeRect(30+30*3,canvas.height -50,20,40);
+  ctx.strokeStyle = "blue";
+  ctx.strokeRect(30+30*4,canvas.height -50,20,40);
+  ctx.strokeStyle = "white";
+  ctx.strokeRect(30+30*5,canvas.height -50,20,40);
+  ctx.strokeStyle = "blue";
+  ctx.strokeRect(30+30*6,canvas.height -50,20,40);
+  ctx.strokeStyle = "white";
+  ctx.strokeRect(30+30*7,canvas.height -50,20,40);
+
+  //フレームの描画
+  ctx.strokeStyle = "grey";
+  ctx.lineWidth = 0.5;
+  ctx.strokeRect(25,30,240,420);
+
+  for(let i = 1; i<8; i++){
+    ctx.beginPath();
+    ctx.moveTo(25+30*i,30+420);
+    ctx.lineTo(25+30*i,30);
+    ctx.stroke();
+  }
+  
+  document.addEventListener('keydown', keydown_event);
+  document.addEventListener('keyup', keyup_event);
+
+  function keydown_event(e){
+    if(e.key == "Shift"){
+      ctx.fillStyle = "red";
+      ctx.fillRect(30+30*0,canvas.height -50,20,40);
+      
+    }
+    if(e.keyCode === 32){
+      e.preventDefault();
+    }
+    switch (e.key.toLowerCase()){
+      case "z":
+        ctx.fillStyle = "white";
+        ctx.fillRect(30+30*1,canvas.height -50,20,40);
+        break;
+
+      case "x":
+        ctx.fillStyle = "blue";
+        ctx.fillRect(30+30*2,canvas.height -50,20,40);
+        break;
+
+      case "c":
+        ctx.fillStyle = "white";
+        ctx.fillRect(30+30*3,canvas.height -50,20,40);
+        break;
+
+      case " ":
+        ctx.fillStyle = "blue";
+        ctx.fillRect(30+30*4,canvas.height -50,20,40);
+        break;
+  
+      case "j":
+        ctx.fillStyle = "white";
+        ctx.fillRect(30+30*5,canvas.height -50,20,40);
+        break;
+
+      case "k":
+        ctx.fillStyle = "blue";
+        ctx.fillRect(30+30*6,canvas.height -50,20,40);
+        break;
+
+      case "l":
+        ctx.fillStyle = "white";
+        ctx.fillRect(30+30*7,canvas.height -50,20,40);
+        break;
+
+    }
+  }
+
+  function keyup_event(e){
+    //console.log("keyup:"+e.key);
+    switch (e.key.toLowerCase()){
+      case "shift":
+        ctx.fillStyle = "black";
+        ctx.fillRect(30+30*0,canvas.height -50,20,40);
+        ctx.lineWidth = 0.5;
+        ctx.strokeStyle = "red";
+        ctx.strokeRect(30+30*0,canvas.height -50,20,40);
+        break;
+     
+      case "z":
+        ctx.fillStyle = "black";
+        ctx.fillRect(30+30*1,canvas.height -50,20,40);
+        ctx.lineWidth = 0.5;
+        ctx.strokeStyle = "white";
+        ctx.strokeRect(30+30*1,canvas.height -50,20,40);
+        break;
+
+      case "x":
+        ctx.fillStyle = "black";
+        ctx.fillRect(30+30*2,canvas.height -50,20,40);
+        ctx.lineWidth = 0.5;
+        ctx.strokeStyle = "blue";
+        ctx.strokeRect(30+30*2,canvas.height -50,20,40);
+        break;
+
+      case "c":
+        ctx.fillStyle = "black";
+        ctx.fillRect(30+30*3,canvas.height -50,20,40);
+        ctx.lineWidth = 0.5;
+        ctx.strokeStyle = "white";
+        ctx.strokeRect(30+30*3,canvas.height -50,20,40);
+        break;
+
+      case " ": 
+        ctx.fillStyle = "black";
+        ctx.fillRect(30+30*4,canvas.height -50,20,40);
+        ctx.lineWidth = 0.5;
+        ctx.strokeStyle = "blue";
+        ctx.strokeRect(30+30*4,canvas.height -50,20,40);
+        break;
+
+      case "j": 
+        ctx.fillStyle = "black";
+        ctx.fillRect(30+30*5,canvas.height -50,20,40);
+        ctx.lineWidth = 0.5;
+        ctx.strokeStyle = "white";
+        ctx.strokeRect(30+30*5,canvas.height -50,20,40);
+        break;
+      
+      case "k": 
+        ctx.fillStyle = "black";
+        ctx.fillRect(30+30*6,canvas.height -50,20,40);
+        ctx.lineWidth = 0.5;
+        ctx.strokeStyle = "blue";
+        ctx.strokeRect(30+30*6,canvas.height -50,20,40);
+        break;
+      
+      case "l": 
+        ctx.fillStyle = "black";
+        ctx.fillRect(30+30*7,canvas.height -50,20,40);
+        ctx.lineWidth = 0.5;
+        ctx.strokeStyle = "white";
+        ctx.strokeRect(30+30*7,canvas.height -50,20,40);
+        break;
+      }
+  }
+</script>
+
+<h2>KEYBORD</h2>
+<ul style="list-style-type:decimal">
+  <li>shift</li>
+  <li>z</li>
+  <li>x</li>
+  <li>c</li>
+  <li>space</li>
+  <li>j</li>
+  <li>k</li>
+  <li>l</li>
+</ul>
+</body>
+</html>
+
