@@ -28,6 +28,7 @@
   ctx.fillRect(0,0,500,500);
 
   //input key
+  ctx.lineWidth = 1;
   ctx.strokeStyle = "red";
   ctx.strokeRect(30,canvas.height -50,20,40);
   ctx.strokeStyle = "white";
@@ -61,32 +62,256 @@
   //document.addEventListener('keypress', keypress_event);
   document.addEventListener('keyup', keyup_event);
 
-  let testY = 0
-
-  const testDraw=()=>{
+  let loopStart = false;
+  let loopStart2 = false;
+  let loopStart3 = false;
+  let loopStart4 = false;
+  let loopStart5 = false;
+  let loopStart6 = false;
+  let loopStart7 = false;
+  let loopStart8 = false;
+  let input1 = []; 
+  let input2 = []; 
+  let input3 = []; 
+  let input4 = []; 
+  let input5 = []; 
+  let input6 = []; 
+  let input7 = []; 
+  let input8 = []; 
+  const speed = 2;
+  const drawNotes1=()=>{
     //前回描画の削除
     ctx.fillStyle = "black";
     ctx.fillRect(25+1,30+1,30-2,420-2);
     
-    if (testY<=420-3){
-      ctx.beginPath();
-      ctx.strokeStyle = "red";
-      ctx.lineWidth = 2;
-      ctx.moveTo(25+1,30+420-testY-1); 
-      ctx.lineTo(25+30-1,30+420-testY-1);
-      testY = testY+2;
-      ctx.stroke(); 
-
-      requestAnimationFrame(testDraw);
+    input1.forEach((item, index) =>{
+      if (item <=420-3){
+        ctx.beginPath();
+        ctx.strokeStyle = "red";
+        ctx.lineWidth = 2;
+        ctx.moveTo(25+1,30+420-item-1); 
+        ctx.lineTo(25+30-1,30+420-item-1);
+        input1[index] = item + speed;
+        ctx.stroke(); 
+     }
+    });
+    if (input1[0] >420-3){
+      input1.shift();
     }
-
- }
-  testDraw();
+    if (input1.length > 0){
+      requestAnimationFrame(drawNotes1);
+    }else{
+      loopStart = false;
+      //前回描画の削除
+      ctx.fillStyle = "black";
+      ctx.fillRect(25+1,30+1,30-2,420-2);
+     }
+  }
+  const drawNotes2=()=>{
+    //前回描画の削除
+    ctx.fillStyle = "black";
+    ctx.fillRect(25+30+1,30+1,30-2,420-2);
+    
+    input2.forEach((item, index) =>{
+      if (item <=420-3){
+        ctx.beginPath();
+        ctx.strokeStyle = "white";
+        ctx.lineWidth = 2;
+        ctx.moveTo(25+30+1,30+420-item-1); 
+        ctx.lineTo(25+30+30-1,30+420-item-1);
+        input2[index] = item + speed;
+        ctx.stroke(); 
+     }
+    });
+    if (input2[0] >420-3){
+      input2.shift();
+    }
+    if (input2.length > 0){
+      requestAnimationFrame(drawNotes2);
+    }else{
+      loopStart2 = false;
+      //前回描画の削除
+      ctx.fillStyle = "black";
+      ctx.fillRect(25+30+1,30+1,30-2,420-2);
+     }
+  }
+  const drawNotes3=()=>{
+    //前回描画の削除
+    ctx.fillStyle = "black";
+    ctx.fillRect(25+30*2+1,30+1,30-2,420-2);
+    
+    input3.forEach((item, index) =>{
+      if (item <=420-3){
+        ctx.beginPath();
+        ctx.strokeStyle = "blue";
+        ctx.lineWidth = 2;
+        ctx.moveTo(25+30*2+1,30+420-item-1); 
+        ctx.lineTo(25+30*2+30-1,30+420-item-1);
+        input3[index] = item + speed;
+        ctx.stroke(); 
+     }
+    });
+    if (input3[0] >420-3){
+      input3.shift();
+    }
+    if (input3.length > 0){
+      requestAnimationFrame(drawNotes3);
+    }else{
+      loopStart3 = false;
+      //前回描画の削除
+      ctx.fillStyle = "black";
+      ctx.fillRect(25+30*2+1,30+1,30-2,420-2);
+     }
+  }
+  const drawNotes4=()=>{
+    //前回描画の削除
+    ctx.fillStyle = "black";
+    ctx.fillRect(25+30*3+1,30+1,30-2,420-2);
+    
+    input4.forEach((item, index) =>{
+      if (item <=420-3){
+        ctx.beginPath();
+        ctx.strokeStyle = "white";
+        ctx.lineWidth = 2;
+        ctx.moveTo(25+30*3+1,30+420-item-1); 
+        ctx.lineTo(25+30*3+30-1,30+420-item-1);
+        input4[index] = item + speed;
+        ctx.stroke(); 
+     }
+    });
+    if (input4[0] >420-3){
+      input4.shift();
+    }
+    if (input4.length > 0){
+      requestAnimationFrame(drawNotes4);
+    }else{
+      loopStart4 = false;
+      //前回描画の削除
+      ctx.fillStyle = "black";
+      ctx.fillRect(25+30*3+1,30+1,30-2,420-2);
+     }
+  }
+  const drawNotes5=()=>{
+    //前回描画の削除
+    ctx.fillStyle = "black";
+    ctx.fillRect(25+30*4+1,30+1,30-2,420-2);
+    
+    input5.forEach((item, index) =>{
+      if (item <=420-3){
+        ctx.beginPath();
+        ctx.strokeStyle = "blue";
+        ctx.lineWidth = 2;
+        ctx.moveTo(25+30*4+1,30+420-item-1); 
+        ctx.lineTo(25+30*4+30-1,30+420-item-1);
+        input5[index] = item + speed;
+        ctx.stroke(); 
+     }
+    });
+    if (input5[0] >420-3){
+      input5.shift();
+    }
+    if (input5.length > 0){
+      requestAnimationFrame(drawNotes5);
+    }else{
+      loopStart5 = false;
+      //前回描画の削除
+      ctx.fillStyle = "black";
+      ctx.fillRect(25+30*4+1,30+1,30-2,420-2);
+     }
+  }
+  const drawNotes6=()=>{
+    //前回描画の削除
+    ctx.fillStyle = "black";
+    ctx.fillRect(25+30*5+1,30+1,30-2,420-2);
+    
+    input6.forEach((item, index) =>{
+      if (item <=420-3){
+        ctx.beginPath();
+        ctx.strokeStyle = "white";
+        ctx.lineWidth = 2;
+        ctx.moveTo(25+30*5+1,30+420-item-1); 
+        ctx.lineTo(25+30*5+30-1,30+420-item-1);
+        input6[index] = item + speed;
+        ctx.stroke(); 
+     }
+    });
+    if (input6[0] >420-3){
+      input6.shift();
+    }
+    if (input6.length > 0){
+      requestAnimationFrame(drawNotes6);
+    }else{
+      loopStart6 = false;
+      //前回描画の削除
+      ctx.fillStyle = "black";
+      ctx.fillRect(25+30*5+1,30+1,30-2,420-2);
+     }
+  }
+  const drawNotes7=()=>{
+    //前回描画の削除
+    ctx.fillStyle = "black";
+    ctx.fillRect(25+30*6+1,30+1,30-2,420-2);
+    
+    input7.forEach((item, index) =>{
+      if (item <=420-3){
+        ctx.beginPath();
+        ctx.strokeStyle = "blue";
+        ctx.lineWidth = 2;
+        ctx.moveTo(25+30*6+1,30+420-item-1); 
+        ctx.lineTo(25+30*6+30-1,30+420-item-1);
+        input7[index] = item + speed;
+        ctx.stroke(); 
+     }
+    });
+    if (input7[0] >420-3){
+      input7.shift();
+    }
+    if (input7.length > 0){
+      requestAnimationFrame(drawNotes7);
+    }else{
+      loopStart7 = false;
+      //前回描画の削除
+      ctx.fillStyle = "black";
+      ctx.fillRect(25+30*6+1,30+1,30-2,420-2);
+     }
+  }
+  const drawNotes8=()=>{
+    //前回描画の削除
+    ctx.fillStyle = "black";
+    ctx.fillRect(25+30*7+1,30+1,30-2,420-2);
+    
+    input8.forEach((item, index) =>{
+      if (item <=420-3){
+        ctx.beginPath();
+        ctx.strokeStyle = "white";
+        ctx.lineWidth = 2;
+        ctx.moveTo(25+30*7+1,30+420-item-1); 
+        ctx.lineTo(25+30*7+30-1,30+420-item-1);
+        input8[index] = item + speed;
+        ctx.stroke(); 
+     }
+    });
+    if (input8[0] >420-3){
+      input8.shift();
+    }
+    if (input8.length > 0){
+      requestAnimationFrame(drawNotes8);
+    }else{
+      loopStart8 = false;
+      //前回描画の削除
+      ctx.fillStyle = "black";
+      ctx.fillRect(25+30*7+1,30+1,30-2,420-2);
+     }
+  }
   function keydown_event(e){
-    console.log("keydown:" + e.key);
     if(e.key == "Shift"){
       ctx.fillStyle = "red";
       ctx.fillRect(30+30*0,canvas.height -50,20,40);
+      input1.push(0);
+      if (loopStart === false){
+        loopStart = true;
+        drawNotes1();
+      }
     }
     if(e.keyCode === 32){
       e.preventDefault();
@@ -95,52 +320,99 @@
       case "z":
         ctx.fillStyle = "white";
         ctx.fillRect(30+30*1,canvas.height -50,20,40);
+
+        input2.push(0);
+        if (loopStart2 === false){
+          loopStart2 = true;
+          drawNotes2();
+        }
         break;
 
       case "x":
         ctx.fillStyle = "blue";
         ctx.fillRect(30+30*2,canvas.height -50,20,40);
+
+        input3.push(0);
+        if (loopStart3 === false){
+          loopStart3 = true;
+          drawNotes3();
+        }
         break;
 
       case "c":
         ctx.fillStyle = "white";
         ctx.fillRect(30+30*3,canvas.height -50,20,40);
+
+        input4.push(0);
+        if (loopStart4 === false){
+          loopStart4 = true;
+          drawNotes4();
+        }
         break;
 
       case " ":
         ctx.fillStyle = "blue";
         ctx.fillRect(30+30*4,canvas.height -50,20,40);
+
+        input5.push(0);
+        if (loopStart5 === false){
+          loopStart5 = true;
+          drawNotes5();
+        }
         break;
-   
+
+  
       case "j":
         ctx.fillStyle = "white";
         ctx.fillRect(30+30*5,canvas.height -50,20,40);
+
+        input6.push(0);
+        if (loopStart6 === false){
+          loopStart6 = true;
+          drawNotes6();
+        }
         break;
+
       case "k":
         ctx.fillStyle = "blue";
         ctx.fillRect(30+30*6,canvas.height -50,20,40);
+
+        input7.push(0);
+        if (loopStart7 === false){
+          loopStart7 = true;
+          drawNotes7();
+        }
         break;
 
       case "l":
         ctx.fillStyle = "white";
         ctx.fillRect(30+30*7,canvas.height -50,20,40);
+
+        input8.push(0);
+        if (loopStart8 === false){
+          loopStart8 = true;
+          drawNotes8();
+        }
         break;
+
     }
   }
 
   function keyup_event(e){
-    console.log("keyup:"+e.key);
+    //console.log("keyup:"+e.key);
     switch (e.key.toLowerCase()){
       case "shift":
         ctx.fillStyle = "black";
         ctx.fillRect(30+30*0,canvas.height -50,20,40);
+        ctx.lineWidth = 0.5;
         ctx.strokeStyle = "red";
         ctx.strokeRect(30+30*0,canvas.height -50,20,40);
         break;
-      
+     
       case "z":
         ctx.fillStyle = "black";
         ctx.fillRect(30+30*1,canvas.height -50,20,40);
+        ctx.lineWidth = 0.5;
         ctx.strokeStyle = "white";
         ctx.strokeRect(30+30*1,canvas.height -50,20,40);
         break;
@@ -148,6 +420,7 @@
       case "x":
         ctx.fillStyle = "black";
         ctx.fillRect(30+30*2,canvas.height -50,20,40);
+        ctx.lineWidth = 0.5;
         ctx.strokeStyle = "blue";
         ctx.strokeRect(30+30*2,canvas.height -50,20,40);
         break;
@@ -155,6 +428,7 @@
       case "c":
         ctx.fillStyle = "black";
         ctx.fillRect(30+30*3,canvas.height -50,20,40);
+        ctx.lineWidth = 0.5;
         ctx.strokeStyle = "white";
         ctx.strokeRect(30+30*3,canvas.height -50,20,40);
         break;
@@ -162,6 +436,7 @@
       case " ": 
         ctx.fillStyle = "black";
         ctx.fillRect(30+30*4,canvas.height -50,20,40);
+        ctx.lineWidth = 0.5;
         ctx.strokeStyle = "blue";
         ctx.strokeRect(30+30*4,canvas.height -50,20,40);
         break;
@@ -169,6 +444,7 @@
       case "j": 
         ctx.fillStyle = "black";
         ctx.fillRect(30+30*5,canvas.height -50,20,40);
+        ctx.lineWidth = 0.5;
         ctx.strokeStyle = "white";
         ctx.strokeRect(30+30*5,canvas.height -50,20,40);
         break;
@@ -176,6 +452,7 @@
       case "k": 
         ctx.fillStyle = "black";
         ctx.fillRect(30+30*6,canvas.height -50,20,40);
+        ctx.lineWidth = 0.5;
         ctx.strokeStyle = "blue";
         ctx.strokeRect(30+30*6,canvas.height -50,20,40);
         break;
@@ -183,6 +460,7 @@
       case "l": 
         ctx.fillStyle = "black";
         ctx.fillRect(30+30*7,canvas.height -50,20,40);
+        ctx.lineWidth = 0.5;
         ctx.strokeStyle = "white";
         ctx.strokeRect(30+30*7,canvas.height -50,20,40);
         break;
