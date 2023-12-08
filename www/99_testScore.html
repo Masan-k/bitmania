@@ -15,20 +15,38 @@
     <input type="text" id="txtBpm" name="txtBpm" value="60" class="custom-input" >
     <input type="submit" value="submit">
   </form>
+  <p id="pTest">テスト</p>
 
   <canvas id="cvs" width="300px" height="500px"></canvas>
   <canvas id="cvsTempo" width="100px" height="300px"></canvas>
 
 <script>
 
+  const pTes = document.getElementById("pTest");
+  pTes.innerText = "マクロテスト333";
+  console.log(pTes.innerText);
+
+  function loadfile(){
+    xhr = new XMLHttpRequest();
+    xhr.open('GET', "http://localhost/bitmania/01_8beat.txt", true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var text = xhr.responseText;
+            console.log(text);
+        }
+    };
+    xhr.send();
+  }
+  loadfile();
+
+  //canvasの宣言
   const canvas = document.getElementById("cvs");
   const ctx = canvas.getContext("2d");
 
-  //canvas全体
   ctx.fillStyle = "black";
   ctx.fillRect(0,0,500,500);
 
-  //Tempo
+  //TempoCanvasの宣言
   const canvasTempo = document.getElementById("cvsTempo");
   const ctxTempo = canvasTempo.getContext("2d");
 
@@ -36,25 +54,22 @@
   ctxTempo.fillRect(0,0,100,300);
   ctxTempo.strokeStyle = "red";
 
-  for(let i = 1; i<=4; i++){
-    ctxTempo.strokeRect(25,50*i,50,50);
-  }
+  for(let i = 1; i<=4; i++)ctxTempo.strokeRect(25,50*i,50,50);
 
-  //time
-  let stopwatch = setInterval(updateDisplay, 1000);
   let seconds = -1;
+  let notesPos1 = [];
+  const notesWidth = 30;
+  startTime = Date.now();
+  update();
 
-  function updateDisplay() {
-    seconds++;
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const remainingSeconds = seconds % 60;
+  function update() {
+    let elaspsedTime = Date.now() - startTime;
+    seconds = Math.floor(elaspsedTime/1000);
+    
+    notesPos = elaspsedTime/20;
+    pTes.innerText = "Elaspsed Time : " + seconds; 
 
-    const displayString =
-      `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
-    console.log(displayString);
-
-    if(seconds%4 === 0){
+    if(seconds % 4 === 0){
       ctxTempo.fillStyle = "black";
       ctxTempo.fillRect(25,50,50,50*4);
         
@@ -64,27 +79,51 @@
     }
     ctxTempo.fillStyle = "red";
     ctxTempo.fillRect(25,200-(50*(seconds%4)),50,50);
-    //document.getElementById('display').innerText = displayString;
-  }
 
+    //notesの描画(非表示）
+    ctx.fillStyle = "black";
+    ctx.fillRect(25,30,30,419);
+
+    //notesの描画
+    if(notesPos <= 419){
+      ctx.beginPath();
+      ctx.moveTo(25,32+notesPos);
+      ctx.lineTo(25+notesWidth,32+notesPos);
+      ctx.lineWidth = 2; 
+      ctx.strokeStyle = "red";
+      ctx.stroke();
+    } 
+
+    if(seconds === 4){
+      console.log("CHECK second4");
+      //notesPos1.push(0);
+    }
+    //notesPos1.forEach((notePos) => {
+    //  console.log(notePos);
+    //});
+    requestAnimationFrame(update);
+    //if(notesPos != -1){
+    //}
+  }
   //input key
   ctx.lineWidth = 1;
   ctx.strokeStyle = "red";
-  ctx.strokeRect(30,canvas.height -50,20,40);
+  ctx.strokeRect(30+notesWidth*0,canvas.height -50,20,40);
   ctx.strokeStyle = "white";
-  ctx.strokeRect(30+30*1,canvas.height -50,20,40);
+  ctx.strokeRect(30+notesWidth*1,canvas.height -50,20,40);
   ctx.strokeStyle = "blue";
-  ctx.strokeRect(30+30*2,canvas.height -50,20,40);
+  ctx.strokeRect(30+notesWidth*2,canvas.height -50,20,40);
   ctx.strokeStyle = "white";
-  ctx.strokeRect(30+30*3,canvas.height -50,20,40);
+  ctx.strokeRect(30+notesWidth*3,canvas.height -50,20,40);
   ctx.strokeStyle = "blue";
-  ctx.strokeRect(30+30*4,canvas.height -50,20,40);
+  ctx.strokeRect(30+notesWidth*4,canvas.height -50,20,40);
   ctx.strokeStyle = "white";
-  ctx.strokeRect(30+30*5,canvas.height -50,20,40);
+  ctx.strokeRect(30+notesWidth*5,canvas.height -50,20,40);
   ctx.strokeStyle = "blue";
-  ctx.strokeRect(30+30*6,canvas.height -50,20,40);
+  ctx.strokeRect(30+notesWidth*6,canvas.height -50,20,40);
   ctx.strokeStyle = "white";
-  ctx.strokeRect(30+30*7,canvas.height -50,20,40);
+  ctx.strokeRect(30+notesWidth*7,canvas.height -50,20,40);
+
 
   //フレームの描画
   ctx.strokeStyle = "grey";
@@ -105,7 +144,6 @@
     if(e.key == "Shift"){
       ctx.fillStyle = "red";
       ctx.fillRect(30+30*0,canvas.height -50,20,40);
-      
     }
     if(e.keyCode === 32){
       e.preventDefault();
