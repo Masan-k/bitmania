@@ -21,239 +21,325 @@
   <canvas id="cvsTempo" width="100px" height="300px"></canvas>
 
 <script>
+  //const pTes = document.getElementById("pTest");
+  //pTes.innerText = "マクロテスト333";
+  //console.log(pTes.innerText);
 
-  const pTes = document.getElementById("pTest");
-  pTes.innerText = "マクロテスト333";
-  console.log(pTes.innerText);
-
+  let tempoData = "-1";
   function loadfile(){
     xhr = new XMLHttpRequest();
     xhr.open('GET', "http://localhost/bitmania/01_8beat.txt", true);
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 200) {
-            var text = xhr.responseText;
-            console.log(text);
+          tempoData = xhr.responseText;
+          main();
         }
     };
     xhr.send();
   }
   loadfile();
+  main();
+  
+  function main(){
+    //canvasの宣言
+    const canvas = document.getElementById("cvs");
+    const ctx = canvas.getContext("2d");
 
-  //canvasの宣言
-  const canvas = document.getElementById("cvs");
-  const ctx = canvas.getContext("2d");
-
-  ctx.fillStyle = "black";
-  ctx.fillRect(0,0,500,500);
-
-  //TempoCanvasの宣言
-  const canvasTempo = document.getElementById("cvsTempo");
-  const ctxTempo = canvasTempo.getContext("2d");
-
-  ctxTempo.fillStyle = "black";
-  ctxTempo.fillRect(0,0,100,300);
-  ctxTempo.strokeStyle = "red";
-
-  for(let i = 1; i<=4; i++)ctxTempo.strokeRect(25,50*i,50,50);
-
-  let seconds = -1;
-  let notesPos1 = [];
-  const notesWidth = 30;
-  startTime = Date.now();
-  update();
-
-  function update() {
-    let elaspsedTime = Date.now() - startTime;
-    seconds = Math.floor(elaspsedTime/1000);
-    
-    notesPos = elaspsedTime/20;
-    pTes.innerText = "Elaspsed Time : " + seconds; 
-
-    if(seconds % 4 === 0){
-      ctxTempo.fillStyle = "black";
-      ctxTempo.fillRect(25,50,50,50*4);
-        
-      for(let i = 1; i<=4; i++){
-        ctxTempo.strokeRect(25,50*i,50,50);
-      }
-    }
-    ctxTempo.fillStyle = "red";
-    ctxTempo.fillRect(25,200-(50*(seconds%4)),50,50);
-
-    //notesの描画(非表示）
     ctx.fillStyle = "black";
-    ctx.fillRect(25,30,30,419);
+    ctx.fillRect(0,0,500,500);
 
-    //notesの描画
-    if(notesPos <= 419){
-      ctx.beginPath();
-      ctx.moveTo(25,32+notesPos);
-      ctx.lineTo(25+notesWidth,32+notesPos);
-      ctx.lineWidth = 2; 
-      ctx.strokeStyle = "red";
-      ctx.stroke();
-    } 
+    //TempoCanvasの宣言
+    const canvasTempo = document.getElementById("cvsTempo");
+    const ctxTempo = canvasTempo.getContext("2d");
 
-    if(seconds === 4){
-      console.log("CHECK second4");
-      //notesPos1.push(0);
-    }
-    //notesPos1.forEach((notePos) => {
-    //  console.log(notePos);
-    //});
+    ctxTempo.fillStyle = "black";
+    ctxTempo.fillRect(0,0,100,300);
+    ctxTempo.strokeStyle = "red";
+
+    let seconds = -1;
+    let tempoCount =0;
+
+    let notes1 = [];
+    let notes2 = [];
+    let notes3 = [];
+    let notes4 = [];
+    let notes5 = [];
+    let notes6 = [];
+    let notes7 = [];
+    let notes8 = [];
+
+    const notesWidth = 30;
+    startTime = Date.now();
+    let displayedNotes = false;
+    let tempoFlg = false;
+    for(let i = 1; i<=4; i++)ctxTempo.strokeRect(25,50*i,50,50);
+
+    const pTes = document.getElementById("pTest");
+    update();
+
+    function update() {
+      let elaspsedTime = Date.now() - startTime;
+      seconds = Math.floor(elaspsedTime/1000);
+      tempoSeconds = Math.floor(elaspsedTime/100);
+      
+      notesPos = elaspsedTime/20;
+      pTes.innerText = "Elaspsed Time : " + seconds; 
+
+      //1秒間隔でテンポを更新する
+      if(seconds % 4 === 0){
+        ctxTempo.fillStyle = "black";
+        ctxTempo.fillRect(25,50,50,50*4);
+          
+          for(let i = 1; i<=4; i++){
+            ctxTempo.strokeRect(25,50*i,50,50);
+          }
+        }
+        ctxTempo.fillStyle = "red";
+        ctxTempo.fillRect(25,200-(50*(seconds%4)),50,50);
+
+        //notesの描画(非表示）
+        ctx.fillStyle = "black";
+        ctx.fillRect(25,30,420,419);
+        ctx.fillRect(25+notesWidth,30,30,419);
+        ctx.fillRect(25+notesWidth*2,30,30,419);
+
+        
+        //フレームの描画
+        ctx.fillStyle = "black";
+        ctx.fillRect(24,29,241,421);
+        ctx.strokeStyle = "grey"
+        ctx.lineWidth = 0.5;
+        ctx.strokeRect(25,30,240,420);
+
+        for(let i = 1; i<8; i++){
+          ctx.beginPath();
+          ctx.moveTo(25+30*i,30+420);
+          ctx.lineTo(25+30*i,30);
+          ctx.stroke();
+        }
+ 
+        //10301130r4
+        if(tempoSeconds%5===0 && tempoFlg === false){
+
+          tempo = tempoData.substring(tempoCount,tempoCount+1);
+          tempoCount++;
+          tempoFlg = true;
+          console.log("tempo => " + tempo);
+
+          switch (tempo){
+            case "1":notes1.push(Date.now());break;
+            case "2":notes2.push(Date.now());break;
+            case "3":notes3.push(Date.now());break;
+            case "4":notes4.push(Date.now());break;
+            case "5":notes5.push(Date.now());break;
+            case "6":notes6.push(Date.now());break;
+            case "7":notes7.push(Date.now());break;
+            case "8":notes8.push(Date.now());break;
+            case "r":
+              tempoCount = 0;
+              tempo = tempoData.substring(tempoCount,tempoCount+1);
+              tempoCount++;
+              console.log("tempo => " + tempo);
+              switch (tempo){
+                case "1":notes1.push(Date.now());break;
+                case "2":notes2.push(Date.now());break;
+                case "3":notes3.push(Date.now());break;
+                case "4":notes4.push(Date.now());break;
+                case "5":notes5.push(Date.now());break;
+                case "6":notes6.push(Date.now());break;
+                case "7":notes7.push(Date.now());break;
+                case "8":notes8.push(Date.now());break;
+              }
+          }
+        }else if(tempoSeconds%5===0 && tempoFlg === true){
+
+        }else{
+          tempoFlg = false;
+        }
+
+
+        notes1.forEach((n) => {
+          notesPos=(Date.now()-n)/1000*105;
+          ctx.beginPath();
+          ctx.moveTo(25,32+notesPos);
+          ctx.lineTo(25+notesWidth,32+notesPos);
+          ctx.lineWidth = 2; 
+          ctx.strokeStyle = "red";
+          ctx.stroke();
+
+          //notesの描画
+          if(notesPos >= 415){
+            notes1.shift()  
+          } 
+        });
+        notes2.forEach((n) => {
+          notesPos=(Date.now()-n)/1000*105;
+          ctx.beginPath();
+          ctx.moveTo(25+notesWidth,32+notesPos);
+          ctx.lineTo(25+notesWidth+notesWidth,32+notesPos);
+          ctx.lineWidth = 2; 
+          ctx.strokeStyle = "white";
+          ctx.stroke();
+
+          //notesの描画
+          if(notesPos >= 415){
+            notes2.shift()  
+          } 
+        });
+        notes3.forEach((n) => {
+          notesPos=(Date.now()-n)/1000*105;
+          ctx.beginPath();
+          ctx.moveTo(25+notesWidth*2,32+notesPos);
+          ctx.lineTo(25+notesWidth*2+notesWidth,32+notesPos);
+          ctx.lineWidth = 2; 
+          ctx.strokeStyle = "blue";
+          ctx.stroke();
+
+          //notesの描画
+          if(notesPos >= 415){
+            notes3.shift()  
+          } 
+        });
+
     requestAnimationFrame(update);
-    //if(notesPos != -1){
-    //}
-  }
-  //input key
-  ctx.lineWidth = 1;
-  ctx.strokeStyle = "red";
-  ctx.strokeRect(30+notesWidth*0,canvas.height -50,20,40);
-  ctx.strokeStyle = "white";
-  ctx.strokeRect(30+notesWidth*1,canvas.height -50,20,40);
-  ctx.strokeStyle = "blue";
-  ctx.strokeRect(30+notesWidth*2,canvas.height -50,20,40);
-  ctx.strokeStyle = "white";
-  ctx.strokeRect(30+notesWidth*3,canvas.height -50,20,40);
-  ctx.strokeStyle = "blue";
-  ctx.strokeRect(30+notesWidth*4,canvas.height -50,20,40);
-  ctx.strokeStyle = "white";
-  ctx.strokeRect(30+notesWidth*5,canvas.height -50,20,40);
-  ctx.strokeStyle = "blue";
-  ctx.strokeRect(30+notesWidth*6,canvas.height -50,20,40);
-  ctx.strokeStyle = "white";
-  ctx.strokeRect(30+notesWidth*7,canvas.height -50,20,40);
-
-
-  //フレームの描画
-  ctx.strokeStyle = "grey";
-  ctx.lineWidth = 0.5;
-  ctx.strokeRect(25,30,240,420);
-
-  for(let i = 1; i<8; i++){
-    ctx.beginPath();
-    ctx.moveTo(25+30*i,30+420);
-    ctx.lineTo(25+30*i,30);
-    ctx.stroke();
-  }
-  
-  document.addEventListener('keydown', keydown_event);
-  document.addEventListener('keyup', keyup_event);
-
-  function keydown_event(e){
-    if(e.key == "Shift"){
-      ctx.fillStyle = "red";
-      ctx.fillRect(30+30*0,canvas.height -50,20,40);
     }
-    if(e.keyCode === 32){
-      e.preventDefault();
-    }
-    switch (e.key.toLowerCase()){
-      case "z":
-        ctx.fillStyle = "white";
-        ctx.fillRect(30+30*1,canvas.height -50,20,40);
-        break;
+    //input key
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = "red";
+    ctx.strokeRect(30+notesWidth*0,canvas.height -50,20,40);
+    ctx.strokeStyle = "white";
+    ctx.strokeRect(30+notesWidth*1,canvas.height -50,20,40);
+    ctx.strokeStyle = "blue";
+    ctx.strokeRect(30+notesWidth*2,canvas.height -50,20,40);
+    ctx.strokeStyle = "white";
+    ctx.strokeRect(30+notesWidth*3,canvas.height -50,20,40);
+    ctx.strokeStyle = "blue";
+    ctx.strokeRect(30+notesWidth*4,canvas.height -50,20,40);
+    ctx.strokeStyle = "white";
+    ctx.strokeRect(30+notesWidth*5,canvas.height -50,20,40);
+    ctx.strokeStyle = "blue";
+    ctx.strokeRect(30+notesWidth*6,canvas.height -50,20,40);
+    ctx.strokeStyle = "white";
+    ctx.strokeRect(30+notesWidth*7,canvas.height -50,20,40);
 
-      case "x":
-        ctx.fillStyle = "blue";
-        ctx.fillRect(30+30*2,canvas.height -50,20,40);
-        break;
+    document.addEventListener('keydown', keydown_event);
+    document.addEventListener('keyup', keyup_event);
 
-      case "c":
-        ctx.fillStyle = "white";
-        ctx.fillRect(30+30*3,canvas.height -50,20,40);
-        break;
-
-      case " ":
-        ctx.fillStyle = "blue";
-        ctx.fillRect(30+30*4,canvas.height -50,20,40);
-        break;
-  
-      case "j":
-        ctx.fillStyle = "white";
-        ctx.fillRect(30+30*5,canvas.height -50,20,40);
-        break;
-
-      case "k":
-        ctx.fillStyle = "blue";
-        ctx.fillRect(30+30*6,canvas.height -50,20,40);
-        break;
-
-      case "l":
-        ctx.fillStyle = "white";
-        ctx.fillRect(30+30*7,canvas.height -50,20,40);
-        break;
-
-    }
-  }
-
-  function keyup_event(e){
-    //console.log("keyup:"+e.key);
-    switch (e.key.toLowerCase()){
-      case "shift":
-        ctx.fillStyle = "black";
+    function keydown_event(e){
+      if(e.key == "Shift"){
+        ctx.fillStyle = "red";
         ctx.fillRect(30+30*0,canvas.height -50,20,40);
-        ctx.lineWidth = 0.5;
-        ctx.strokeStyle = "red";
-        ctx.strokeRect(30+30*0,canvas.height -50,20,40);
-        break;
-     
-      case "z":
-        ctx.fillStyle = "black";
-        ctx.fillRect(30+30*1,canvas.height -50,20,40);
-        ctx.lineWidth = 0.5;
-        ctx.strokeStyle = "white";
-        ctx.strokeRect(30+30*1,canvas.height -50,20,40);
-        break;
-
-      case "x":
-        ctx.fillStyle = "black";
-        ctx.fillRect(30+30*2,canvas.height -50,20,40);
-        ctx.lineWidth = 0.5;
-        ctx.strokeStyle = "blue";
-        ctx.strokeRect(30+30*2,canvas.height -50,20,40);
-        break;
-
-      case "c":
-        ctx.fillStyle = "black";
-        ctx.fillRect(30+30*3,canvas.height -50,20,40);
-        ctx.lineWidth = 0.5;
-        ctx.strokeStyle = "white";
-        ctx.strokeRect(30+30*3,canvas.height -50,20,40);
-        break;
-
-      case " ": 
-        ctx.fillStyle = "black";
-        ctx.fillRect(30+30*4,canvas.height -50,20,40);
-        ctx.lineWidth = 0.5;
-        ctx.strokeStyle = "blue";
-        ctx.strokeRect(30+30*4,canvas.height -50,20,40);
-        break;
-
-      case "j": 
-        ctx.fillStyle = "black";
-        ctx.fillRect(30+30*5,canvas.height -50,20,40);
-        ctx.lineWidth = 0.5;
-        ctx.strokeStyle = "white";
-        ctx.strokeRect(30+30*5,canvas.height -50,20,40);
-        break;
-      
-      case "k": 
-        ctx.fillStyle = "black";
-        ctx.fillRect(30+30*6,canvas.height -50,20,40);
-        ctx.lineWidth = 0.5;
-        ctx.strokeStyle = "blue";
-        ctx.strokeRect(30+30*6,canvas.height -50,20,40);
-        break;
-      
-      case "l": 
-        ctx.fillStyle = "black";
-        ctx.fillRect(30+30*7,canvas.height -50,20,40);
-        ctx.lineWidth = 0.5;
-        ctx.strokeStyle = "white";
-        ctx.strokeRect(30+30*7,canvas.height -50,20,40);
-        break;
       }
+      if(e.keyCode === 32){
+        e.preventDefault();
+      }
+      switch (e.key.toLowerCase()){
+        case "z":
+          ctx.fillStyle = "white";
+          ctx.fillRect(30+30*1,canvas.height -50,20,40);
+          break;
+
+        case "x":
+          ctx.fillStyle = "blue";
+          ctx.fillRect(30+30*2,canvas.height -50,20,40);
+          break;
+
+        case "c":
+          ctx.fillStyle = "white";
+          ctx.fillRect(30+30*3,canvas.height -50,20,40);
+          break;
+
+        case " ":
+          ctx.fillStyle = "blue";
+          ctx.fillRect(30+30*4,canvas.height -50,20,40);
+          break;
+    
+        case "j":
+          ctx.fillStyle = "white";
+          ctx.fillRect(30+30*5,canvas.height -50,20,40);
+          break;
+
+        case "k":
+          ctx.fillStyle = "blue";
+          ctx.fillRect(30+30*6,canvas.height -50,20,40);
+          break;
+
+        case "l":
+          ctx.fillStyle = "white";
+          ctx.fillRect(30+30*7,canvas.height -50,20,40);
+          break;
+
+      }
+    }
+
+    function keyup_event(e){
+      //console.log("keyup:"+e.key);
+      switch (e.key.toLowerCase()){
+        case "shift":
+          ctx.fillStyle = "black";
+          ctx.fillRect(30+30*0,canvas.height -50,20,40);
+          ctx.lineWidth = 0.5;
+          ctx.strokeStyle = "red";
+          ctx.strokeRect(30+30*0,canvas.height -50,20,40);
+          break;
+       
+        case "z":
+          ctx.fillStyle = "black";
+          ctx.fillRect(30+30*1,canvas.height -50,20,40);
+          ctx.lineWidth = 0.5;
+          ctx.strokeStyle = "white";
+          ctx.strokeRect(30+30*1,canvas.height -50,20,40);
+          break;
+
+        case "x":
+          ctx.fillStyle = "black";
+          ctx.fillRect(30+30*2,canvas.height -50,20,40);
+          ctx.lineWidth = 0.5;
+          ctx.strokeStyle = "blue";
+          ctx.strokeRect(30+30*2,canvas.height -50,20,40);
+          break;
+
+        case "c":
+          ctx.fillStyle = "black";
+          ctx.fillRect(30+30*3,canvas.height -50,20,40);
+          ctx.lineWidth = 0.5;
+          ctx.strokeStyle = "white";
+          ctx.strokeRect(30+30*3,canvas.height -50,20,40);
+          break;
+
+        case " ": 
+          ctx.fillStyle = "black";
+          ctx.fillRect(30+30*4,canvas.height -50,20,40);
+          ctx.lineWidth = 0.5;
+          ctx.strokeStyle = "blue";
+          ctx.strokeRect(30+30*4,canvas.height -50,20,40);
+          break;
+
+        case "j": 
+          ctx.fillStyle = "black";
+          ctx.fillRect(30+30*5,canvas.height -50,20,40);
+          ctx.lineWidth = 0.5;
+          ctx.strokeStyle = "white";
+          ctx.strokeRect(30+30*5,canvas.height -50,20,40);
+          break;
+        
+        case "k": 
+          ctx.fillStyle = "black";
+          ctx.fillRect(30+30*6,canvas.height -50,20,40);
+          ctx.lineWidth = 0.5;
+          ctx.strokeStyle = "blue";
+          ctx.strokeRect(30+30*6,canvas.height -50,20,40);
+          break;
+        
+        case "l": 
+          ctx.fillStyle = "black";
+          ctx.fillRect(30+30*7,canvas.height -50,20,40);
+          ctx.lineWidth = 0.5;
+          ctx.strokeStyle = "white";
+          ctx.strokeRect(30+30*7,canvas.height -50,20,40);
+          break;
+        }
+    }
   }
 </script>
 
