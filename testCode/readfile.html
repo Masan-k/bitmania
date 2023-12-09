@@ -1,16 +1,32 @@
+<!DOCTYPE html>
 <head>
-<form>
+</head>
+<body>
 <script>
-  xhr = new XMLHequest();
-  xhr.open('GET', 'テキストファイルのURL', true);
+  
+  xhr = new XMLHttpRequest();
+  xhr.open('GET', 'http://localhost/01_8beat.txt', true);
+  xhr.onreadystatechange = someHandler;
   xhr.onreadystatechange = function () {
       if (xhr.readyState == 4 && xhr.status == 200) {
           var text = xhr.responseText;
-          console.log(text);
+          document.write(text);
       }
   };
   xhr.send();
+
+  const url = 'http://localhost/01_8beat.txt';
+  fetch(url)
+    .then(response => response.text())
+    .then(content => {
+      console.log(content); // ファイルの中身をコンソールに表示
+    })
+    .catch(error => {
+      console.log('Fetch error:',error);
+    });
+
+  loadFile();
+  function loadFile() {
+ }
 </script>
-</form>
-</head>
-     
+</body>
