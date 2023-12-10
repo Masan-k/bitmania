@@ -1,8 +1,8 @@
 # bitmania
 
 ## 概要
-音ゲーのスコアを上げる為のスクリプト
-https://masan-k.github.io/bitmania/www/99_testScore.html
+音ゲーのスコアを上げる為のスクリプト  
+https://masan-k.github.io/bitmania/
 
 
 ## 前提
