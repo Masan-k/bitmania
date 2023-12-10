@@ -21,26 +21,25 @@
   <canvas id="cvsTempo" width="100px" height="300px"></canvas>
 
 <script>
-  //const pTes = document.getElementById("pTest");
-  //pTes.innerText = "マクロテスト333";
-  //console.log(pTes.innerText);
-
-  let tempoData = "-1";
+  let loadText;
   function loadfile(){
     xhr = new XMLHttpRequest();
-    xhr.open('GET', "http://localhost/bitmania/01_8beat.txt", true);
+    //xhr.open('GET', "http://localhost/bitmania/01_8beat.txt", true);
+    //xhr.open('GET', "http://localhost/bitmania/02_8beat.txt", true);
+    xhr.open('GET', "http://localhost/bitmania/03_8beat.txt", true);
+    //xhr.open('GET', "http://localhost/bitmania/04_8beat.txt", true);
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 200) {
-          tempoData = xhr.responseText;
+          loadText = xhr.responseText;
           main();
         }
     };
     xhr.send();
   }
   loadfile();
-  main();
   
   function main(){
+
     //canvasの宣言
     const canvas = document.getElementById("cvs");
     const ctx = canvas.getContext("2d");
@@ -57,7 +56,6 @@
     ctxTempo.strokeStyle = "red";
 
     let seconds = -1;
-    let tempoCount =0;
 
     let notes1 = [];
     let notes2 = [];
@@ -68,13 +66,17 @@
     let notes7 = [];
     let notes8 = [];
 
+    let tempoCount = 0;
     const notesWidth = 30;
     startTime = Date.now();
     let displayedNotes = false;
     let tempoFlg = false;
-    for(let i = 1; i<=4; i++)ctxTempo.strokeRect(25,50*i,50,50);
+    for(let i = 1; i<=4; i++){
+      ctxTempo.strokeRect(25,50*i,50,50);
+    }
 
     const pTes = document.getElementById("pTest");
+    let tempoRow = loadText.split("\n");
     update();
 
     function update() {
@@ -84,8 +86,8 @@
       
       notesPos = elaspsedTime/20;
       pTes.innerText = "Elaspsed Time : " + seconds; 
-
-      //1秒間隔でテンポを更新する
+      
+      // 1秒間隔でテンポを更新する
       if(seconds % 4 === 0){
         ctxTempo.fillStyle = "black";
         ctxTempo.fillRect(25,50,50,50*4);
@@ -118,28 +120,12 @@
           ctx.stroke();
         }
  
-        //10301130r4
         if(tempoSeconds%5===0 && tempoFlg === false){
 
-          tempo = tempoData.substring(tempoCount,tempoCount+1);
-          tempoCount++;
-          tempoFlg = true;
-          console.log("tempo => " + tempo);
-
-          switch (tempo){
-            case "1":notes1.push(Date.now());break;
-            case "2":notes2.push(Date.now());break;
-            case "3":notes3.push(Date.now());break;
-            case "4":notes4.push(Date.now());break;
-            case "5":notes5.push(Date.now());break;
-            case "6":notes6.push(Date.now());break;
-            case "7":notes7.push(Date.now());break;
-            case "8":notes8.push(Date.now());break;
-            case "r":
-              tempoCount = 0;
-              tempo = tempoData.substring(tempoCount,tempoCount+1);
-              tempoCount++;
-              console.log("tempo => " + tempo);
+          tempoRow.forEach((dataRow) => {
+            if(dataRow != ""){
+              tempo = dataRow.substring(tempoCount,tempoCount+1);
+              tempoFlg = true;
               switch (tempo){
                 case "1":notes1.push(Date.now());break;
                 case "2":notes2.push(Date.now());break;
@@ -150,58 +136,59 @@
                 case "7":notes7.push(Date.now());break;
                 case "8":notes8.push(Date.now());break;
               }
-          }
+            }
+          });
+          tempoCount++;
         }else if(tempoSeconds%5===0 && tempoFlg === true){
 
         }else{
           tempoFlg = false;
         }
 
+        //notesの描画
+        drawNotes(notes1,1);
+        drawNotes(notes2,2);
+        drawNotes(notes3,3);
+        drawNotes(notes4,4);
+        drawNotes(notes5,5);
+        drawNotes(notes6,6);
+        drawNotes(notes7,7);
+        drawNotes(notes8,8);
 
-        notes1.forEach((n) => {
-          notesPos=(Date.now()-n)/1000*105;
-          ctx.beginPath();
-          ctx.moveTo(25,32+notesPos);
-          ctx.lineTo(25+notesWidth,32+notesPos);
-          ctx.lineWidth = 2; 
-          ctx.strokeStyle = "red";
-          ctx.stroke();
+     requestAnimationFrame(update);
+    }
 
-          //notesの描画
-          if(notesPos >= 415){
-            notes1.shift()  
-          } 
-        });
-        notes2.forEach((n) => {
-          notesPos=(Date.now()-n)/1000*105;
-          ctx.beginPath();
-          ctx.moveTo(25+notesWidth,32+notesPos);
-          ctx.lineTo(25+notesWidth+notesWidth,32+notesPos);
-          ctx.lineWidth = 2; 
-          ctx.strokeStyle = "white";
-          ctx.stroke();
+    function drawNotes(notes,index){
+      notes.forEach((n) => {
+        let notesPos=(Date.now()-n)/1000*105;
+        ctx.beginPath();
+        ctx.lineWidth = 2; 
+        ctx.moveTo(25+notesWidth*(index-1),32+notesPos);
+        ctx.lineTo(25+notesWidth*(index-1)+notesWidth,32+notesPos);
 
-          //notesの描画
-          if(notesPos >= 415){
-            notes2.shift()  
-          } 
-        });
-        notes3.forEach((n) => {
-          notesPos=(Date.now()-n)/1000*105;
-          ctx.beginPath();
-          ctx.moveTo(25+notesWidth*2,32+notesPos);
-          ctx.lineTo(25+notesWidth*2+notesWidth,32+notesPos);
-          ctx.lineWidth = 2; 
-          ctx.strokeStyle = "blue";
-          ctx.stroke();
+        switch (index){
+          case 1:
+            ctx.strokeStyle = "red";
+            break;
+          case 2:
+          case 4:
+          case 6:
+          case 8:
+            ctx.strokeStyle = "white";
+            break;
+          case 3:
+          case 5:
+          case 7:
+            ctx.strokeStyle = "blue";
+            break;
+        }
 
-          //notesの描画
-          if(notesPos >= 415){
-            notes3.shift()  
-          } 
-        });
-
-    requestAnimationFrame(update);
+        ctx.stroke();
+        if(notesPos >= 415){
+          notes.shift()  
+          //console.log("notes => " +notes);
+        } 
+      });
     }
     //input key
     ctx.lineWidth = 1;
