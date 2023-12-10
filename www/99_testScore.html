@@ -17,16 +17,16 @@
   </form>
   <p id="pTest">テスト</p>
 
-  <canvas id="cvs" width="300px" height="500px"></canvas>
+  <canvas id="cvs" width="300px" height="550px"></canvas>
   <canvas id="cvsTempo" width="100px" height="300px"></canvas>
 
 <script>
   let loadText;
   function loadfile(){
     xhr = new XMLHttpRequest();
-    //xhr.open('GET', "http://localhost/bitmania/01_8beat.txt", true);
+    xhr.open('GET', "http://localhost/bitmania/01_8beat.txt", true);
     //xhr.open('GET', "http://localhost/bitmania/02_8beat.txt", true);
-    xhr.open('GET', "http://localhost/bitmania/03_8beat.txt", true);
+    //xhr.open('GET', "http://localhost/bitmania/03_8beat.txt", true);
     //xhr.open('GET', "http://localhost/bitmania/04_8beat.txt", true);
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 200) {
@@ -45,7 +45,7 @@
     const ctx = canvas.getContext("2d");
 
     ctx.fillStyle = "black";
-    ctx.fillRect(0,0,500,500);
+    ctx.fillRect(0,0,canvas.width,canvas.height);
 
     //TempoCanvasの宣言
     const canvasTempo = document.getElementById("cvsTempo");
@@ -67,26 +67,40 @@
     let notes8 = [];
 
     let tempoCount = 0;
+    let score = -1;
     const notesWidth = 30;
     startTime = Date.now();
-    let displayedNotes = false;
     let tempoFlg = false;
     for(let i = 1; i<=4; i++){
       ctxTempo.strokeRect(25,50*i,50,50);
     }
-
     const pTes = document.getElementById("pTest");
     let tempoRow = loadText.split("\n");
+    let result = "RESULT";
+    let milliSecDiff = "±milliSecond";
+    //判定フォント
+    ctx.font = "20px Meiryo";
     update();
 
     function update() {
       let elaspsedTime = Date.now() - startTime;
       seconds = Math.floor(elaspsedTime/1000);
       tempoSeconds = Math.floor(elaspsedTime/100);
-      
-      notesPos = elaspsedTime/20;
-      pTes.innerText = "Elaspsed Time : " + seconds; 
-      
+
+      pTes.innerText = "SCORE:" + score; 
+
+      //判定結果の表示
+      ctx.fillStyle = "black";
+      ctx.fillRect(0,canvas.height -55,canvas.width,55);
+      switch (result){
+        case "GREAT": ctx.fillStyle = "orange";  break;
+        case "GOOD":  ctx.fillStyle = "yellow"; break;
+        case "BAD":   ctx.fillStyle = "red";    break;
+        case "POOR":  ctx.fillStyle = "purple"; break;
+        default:      ctx.fillStyle = "white";
+      }
+      ctx.fillText(result + "(" + milliSecDiff + ")",20,canvas.height -15);
+
       // 1秒間隔でテンポを更新する
       if(seconds % 4 === 0){
         ctxTempo.fillStyle = "black";
@@ -155,67 +169,85 @@
         drawNotes(notes7,7);
         drawNotes(notes8,8);
 
-     requestAnimationFrame(update);
+       requestAnimationFrame(update);
     }
 
     function drawNotes(notes,index){
       notes.forEach((n) => {
         let notesPos=(Date.now()-n)/1000*105;
-        ctx.beginPath();
-        ctx.lineWidth = 2; 
-        ctx.moveTo(25+notesWidth*(index-1),32+notesPos);
-        ctx.lineTo(25+notesWidth*(index-1)+notesWidth,32+notesPos);
-
-        switch (index){
-          case 1:
-            ctx.strokeStyle = "red";
-            break;
-          case 2:
-          case 4:
-          case 6:
-          case 8:
-            ctx.strokeStyle = "white";
-            break;
-          case 3:
-          case 5:
-          case 7:
-            ctx.strokeStyle = "blue";
-            break;
-        }
-
-        ctx.stroke();
         if(notesPos >= 415){
-          notes.shift()  
-          //console.log("notes => " +notes);
-        } 
-      });
+          // 入力キーを上書きしてしまうため何もしない 
+        }else{ 
+          ctx.beginPath();
+          ctx.lineWidth = 2; 
+          ctx.moveTo(25+notesWidth*(index-1),32+notesPos);
+          ctx.lineTo(25+notesWidth*(index-1)+notesWidth,32+notesPos);
+
+          switch (index){
+            case 1:
+              ctx.strokeStyle = "red";
+              break;
+            case 2:
+            case 4:
+            case 6:
+            case 8:
+              ctx.strokeStyle = "white";
+              break;
+            case 3:
+            case 5:
+            case 7:
+              ctx.strokeStyle = "blue";
+              break;
+          }
+          ctx.stroke();
+        }
+     });
     }
     //input key
     ctx.lineWidth = 1;
     ctx.strokeStyle = "red";
-    ctx.strokeRect(30+notesWidth*0,canvas.height -50,20,40);
+    ctx.strokeRect(30+notesWidth*0,450,20,40);
     ctx.strokeStyle = "white";
-    ctx.strokeRect(30+notesWidth*1,canvas.height -50,20,40);
+    ctx.strokeRect(30+notesWidth*1,450,20,40);
     ctx.strokeStyle = "blue";
-    ctx.strokeRect(30+notesWidth*2,canvas.height -50,20,40);
+    ctx.strokeRect(30+notesWidth*2,450,20,40);
     ctx.strokeStyle = "white";
-    ctx.strokeRect(30+notesWidth*3,canvas.height -50,20,40);
+    ctx.strokeRect(30+notesWidth*3,450,20,40);
     ctx.strokeStyle = "blue";
-    ctx.strokeRect(30+notesWidth*4,canvas.height -50,20,40);
+    ctx.strokeRect(30+notesWidth*4,450,20,40);
     ctx.strokeStyle = "white";
-    ctx.strokeRect(30+notesWidth*5,canvas.height -50,20,40);
+    ctx.strokeRect(30+notesWidth*5,450,20,40);
     ctx.strokeStyle = "blue";
-    ctx.strokeRect(30+notesWidth*6,canvas.height -50,20,40);
+    ctx.strokeRect(30+notesWidth*6,450,20,40);
     ctx.strokeStyle = "white";
-    ctx.strokeRect(30+notesWidth*7,canvas.height -50,20,40);
+    ctx.strokeRect(30+notesWidth*7,450,20,40);
 
     document.addEventListener('keydown', keydown_event);
     document.addEventListener('keyup', keyup_event);
 
+    function judge(notes){
+      if(notes.length >= 1){
+        milliSecDiff = Date.now() - notes[0] - 4000;
+        console.log("milliSecDiff => " +milliSecDiff);
+        if(Math.abs(milliSecDiff) <= 16*2){
+          score = score + 2;
+          result = "GREAT";
+        }else if(Math.abs(milliSecDiff) <= 16*7){
+          score = score + 1; 
+          result = "GOOD";
+        }else if(Math.abs(milliSecDiff) <= 16*9){
+          result = "BAD";
+        }else{
+          result = "POOR";
+        }
+        notes.shift();
+      }
+    }
     function keydown_event(e){
-      if(e.key == "Shift"){
+      if(e.key === "Shift"){
         ctx.fillStyle = "red";
-        ctx.fillRect(30+30*0,canvas.height -50,20,40);
+        ctx.fillRect(30+30*0,450,20,40);
+        judge(notes1);
       }
       if(e.keyCode === 32){
         e.preventDefault();
@@ -223,107 +255,112 @@
       switch (e.key.toLowerCase()){
         case "z":
           ctx.fillStyle = "white";
-          ctx.fillRect(30+30*1,canvas.height -50,20,40);
+          ctx.fillRect(30+30*1,450,20,40);
+          judge(notes2);
           break;
 
         case "x":
           ctx.fillStyle = "blue";
-          ctx.fillRect(30+30*2,canvas.height -50,20,40);
+          ctx.fillRect(30+30*2,450,20,40);
+          judge(notes3);
           break;
 
         case "c":
           ctx.fillStyle = "white";
-          ctx.fillRect(30+30*3,canvas.height -50,20,40);
+          ctx.fillRect(30+30*3,450,20,40);
+          judge(notes4);
           break;
 
         case " ":
           ctx.fillStyle = "blue";
-          ctx.fillRect(30+30*4,canvas.height -50,20,40);
+          ctx.fillRect(30+30*4,450,20,40);
+          judge(notes5);
           break;
     
         case "j":
           ctx.fillStyle = "white";
-          ctx.fillRect(30+30*5,canvas.height -50,20,40);
+          ctx.fillRect(30+30*5,450,20,40);
+          judge(notes6);
           break;
 
         case "k":
           ctx.fillStyle = "blue";
-          ctx.fillRect(30+30*6,canvas.height -50,20,40);
+          ctx.fillRect(30+30*6,450,20,40);
+          judge(notes7);
           break;
 
         case "l":
           ctx.fillStyle = "white";
-          ctx.fillRect(30+30*7,canvas.height -50,20,40);
+          ctx.fillRect(30+30*7,450,20,40);
+          judge(notes8);
           break;
-
       }
     }
 
     function keyup_event(e){
-      //console.log("keyup:"+e.key);
       switch (e.key.toLowerCase()){
         case "shift":
           ctx.fillStyle = "black";
-          ctx.fillRect(30+30*0,canvas.height -50,20,40);
+          ctx.fillRect(30+30*0,450,20,40);
           ctx.lineWidth = 0.5;
           ctx.strokeStyle = "red";
-          ctx.strokeRect(30+30*0,canvas.height -50,20,40);
+          ctx.strokeRect(30+30*0,450,20,40);
           break;
        
         case "z":
           ctx.fillStyle = "black";
-          ctx.fillRect(30+30*1,canvas.height -50,20,40);
+          ctx.fillRect(30+30*1,450,20,40);
           ctx.lineWidth = 0.5;
           ctx.strokeStyle = "white";
-          ctx.strokeRect(30+30*1,canvas.height -50,20,40);
+          ctx.strokeRect(30+30*1,450,20,40);
           break;
 
         case "x":
           ctx.fillStyle = "black";
-          ctx.fillRect(30+30*2,canvas.height -50,20,40);
+          ctx.fillRect(30+30*2,450,20,40);
           ctx.lineWidth = 0.5;
           ctx.strokeStyle = "blue";
-          ctx.strokeRect(30+30*2,canvas.height -50,20,40);
+          ctx.strokeRect(30+30*2,450,20,40);
           break;
 
         case "c":
           ctx.fillStyle = "black";
-          ctx.fillRect(30+30*3,canvas.height -50,20,40);
+          ctx.fillRect(30+30*3,450,20,40);
           ctx.lineWidth = 0.5;
           ctx.strokeStyle = "white";
-          ctx.strokeRect(30+30*3,canvas.height -50,20,40);
+          ctx.strokeRect(30+30*3,450,20,40);
           break;
 
         case " ": 
           ctx.fillStyle = "black";
-          ctx.fillRect(30+30*4,canvas.height -50,20,40);
+          ctx.fillRect(30+30*4,450,20,40);
           ctx.lineWidth = 0.5;
           ctx.strokeStyle = "blue";
-          ctx.strokeRect(30+30*4,canvas.height -50,20,40);
+          ctx.strokeRect(30+30*4,450,20,40);
           break;
 
         case "j": 
           ctx.fillStyle = "black";
-          ctx.fillRect(30+30*5,canvas.height -50,20,40);
+          ctx.fillRect(30+30*5,450,20,40);
           ctx.lineWidth = 0.5;
           ctx.strokeStyle = "white";
-          ctx.strokeRect(30+30*5,canvas.height -50,20,40);
+          ctx.strokeRect(30+30*5,450,20,40);
           break;
         
         case "k": 
           ctx.fillStyle = "black";
-          ctx.fillRect(30+30*6,canvas.height -50,20,40);
+          ctx.fillRect(30+30*6,450,20,40);
           ctx.lineWidth = 0.5;
           ctx.strokeStyle = "blue";
-          ctx.strokeRect(30+30*6,canvas.height -50,20,40);
+          ctx.strokeRect(30+30*6,450,20,40);
           break;
         
         case "l": 
           ctx.fillStyle = "black";
-          ctx.fillRect(30+30*7,canvas.height -50,20,40);
+          ctx.fillRect(30+30*7,450,20,40);
           ctx.lineWidth = 0.5;
           ctx.strokeStyle = "white";
-          ctx.strokeRect(30+30*7,canvas.height -50,20,40);
+          ctx.strokeRect(30+30*7,450,20,40);
           break;
         }
     }
