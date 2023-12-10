@@ -2,9 +2,8 @@
 
 ## 概要
 音ゲーのスコアを上げる為のスクリプト
+https://masan-k.github.io/bitmania/www/99_testScore.html
 
-## 使い方
-localhost/bitmania.htmlにアクセスする
 
 ## 前提
 入力は8つ（7鍵盤＋皿を想定）
