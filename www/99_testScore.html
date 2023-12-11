@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <title>bitmania</title>
+  
   <style>
     .custom-input{width: 50px;}
     body{ font-family: Arial, sans-serif;}
@@ -19,7 +20,13 @@
 
   <canvas id="cvs" width="300px" height="550px"></canvas>
   <canvas id="cvsTempo" width="100px" height="300px"></canvas>
-
+  <input type="button" value="♪" onclick="OnButtonClick();"/>
+  <audio id="mainClickSound" preload="auto">
+    <source src="mainClick.mp3" type="audio/mp3" muted controls>
+  </audio>
+  <audio id="subClickSound" preload="auto">
+    <source src="subClick.mp3" type="audio/mp3" muted controls>
+  </audio>
 <script>
   let loadText;
   function loadfile(){
@@ -37,7 +44,11 @@
     xhr.send();
   }
   loadfile();
-  
+  function OnButtonClick(){
+    mainClickSound.muted = false;
+    subClickSound.muted = false;
+  }
+
   function main(){
 
     //canvasの宣言
@@ -82,6 +93,18 @@
     ctx.font = "20px Meiryo";
     update();
 
+    function playSound(sound){
+      sound.currentTime = 0;
+      let promise = sound.play();
+      if (promise !== undefined) {
+        promise.then(_ => {
+          console.log("ok");
+        }).catch(error => {
+          console.log("promise error");
+        });
+      }
+    }
+
     function update() {
       let elaspsedTime = Date.now() - startTime;
       seconds = Math.floor(elaspsedTime/1000);
@@ -118,7 +141,6 @@
         ctx.fillRect(25,30,420,419);
         ctx.fillRect(25+notesWidth,30,30,419);
         ctx.fillRect(25+notesWidth*2,30,30,419);
-
         
         //フレームの描画
         ctx.fillStyle = "black";
@@ -133,9 +155,14 @@
           ctx.lineTo(25+30*i,30);
           ctx.stroke();
         }
- 
         if(tempoSeconds%5===0 && tempoFlg === false){
-
+          if(tempoCount%2===0){
+            playSound(mainClickSound);
+          }else{
+            //テンポが分かりずらくなるので一旦廃止
+            //playSound(subClickSound);
+            //playSound(mainClickSound);
+          }
           tempoRow.forEach((dataRow) => {
             if(dataRow != ""){
               tempo = dataRow.substring(tempoCount,tempoCount+1);
