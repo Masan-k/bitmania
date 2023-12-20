@@ -20,21 +20,26 @@
 
   <canvas id="cvs" width="300px" height="550px"></canvas>
   <canvas id="cvsTempo" width="100px" height="300px"></canvas>
-  <input type="button" value="♪" onclick="OnButtonClick();"/>
-  <audio id="mainClickSound" preload="auto">
-    <source src="mainClick.mp3" type="audio/mp3" muted controls>
-  </audio>
-  <audio id="subClickSound" preload="auto">
-    <source src="subClick.mp3" type="audio/mp3" muted controls>
-  </audio>
+  <input type="button" value="PLAY" onclick="OnButtonClick();"/>
+  <audio id="mainClickSound" preload="auto"><source src="music/mainClick.mp3" type="audio/mp3" muted controls></audio>
+  <audio id="subClickSound" preload="auto"><source src="music/subClick.mp3" type="audio/mp3" muted controls></audio>
+  <audio id="inputKey01" preload="auto"><source src="music/01_bass.mp3" type="audio/mp3" muted controls></audio>
+  <audio id="inputKey02" preload="auto"><source src="music/02_snare_small.mp3" type="audio/mp3" muted controls></audio>
+  <audio id="inputKey03" preload="auto"><source src="music/03_snare_normal.mp3" type="audio/mp3" muted controls></audio>
+  <audio id="inputKey04" preload="auto"><source src="music/04_snare_side.mp3" type="audio/mp3" muted controls></audio>
+  <audio id="inputKey05" preload="auto"><source src="music/05_hihat_ti.mp3" type="audio/mp3" muted controls></audio>
+  <audio id="inputKey06" preload="auto"><source src="music/06_lowtom.mp3" type="audio/mp3" muted controls></audio>
+  <audio id="inputKey07" preload="auto"><source src="music/07_hitom.mp3" type="audio/mp3" muted controls></audio>
+  <audio id="inputKey08" preload="auto"><source src="music/08_floortom.mp3" type="audio/mp3" muted controls></audio>
+
 <script>
   let loadText;
   function loadfile(){
     xhr = new XMLHttpRequest();
-    xhr.open('GET', "http://localhost/bitmania/01_8beat.txt", true);
-    //xhr.open('GET', "http://localhost/bitmania/02_8beat.txt", true);
-    //xhr.open('GET', "http://localhost/bitmania/03_8beat.txt", true);
-    //xhr.open('GET', "http://localhost/bitmania/04_8beat.txt", true);
+    xhr.open('GET', "http://localhost/bitmania/score/01_8beat.txt", true);
+    //xhr.open('GET', "http://localhost/bitmania/score/02_8beat.txt", true);
+    //xhr.open('GET', "http://localhost/bitmania/score/03_8beat.txt", true);
+    //xhr.open('GET', "http://localhost/bitmania/score/04_8beat.txt", true);
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 200) {
           loadText = xhr.responseText;
@@ -47,6 +52,10 @@
   function OnButtonClick(){
     mainClickSound.muted = false;
     subClickSound.muted = false;
+    inputKey01.muted = false;
+    inputKey02.muted = false;
+    inputKey03.muted = false;
+    inputKey04.muted = false;
   }
 
   function main(){
@@ -158,6 +167,7 @@
         if(tempoSeconds%5===0 && tempoFlg === false){
           if(tempoCount%2===0){
             playSound(mainClickSound);
+
           }else{
             //テンポが分かりずらくなるので一旦廃止
             //playSound(subClickSound);
@@ -272,6 +282,7 @@
     }
     function keydown_event(e){
       if(e.key === "Shift"){
+        playSound(inputKey01);
         ctx.fillStyle = "red";
         ctx.fillRect(30+30*0,450,20,40);
         judge(notes1);
@@ -281,42 +292,49 @@
       }
       switch (e.key.toLowerCase()){
         case "z":
+          playSound(inputKey02);
           ctx.fillStyle = "white";
           ctx.fillRect(30+30*1,450,20,40);
           judge(notes2);
           break;
 
         case "x":
+          playSound(inputKey03);
           ctx.fillStyle = "blue";
           ctx.fillRect(30+30*2,450,20,40);
           judge(notes3);
           break;
 
         case "c":
+          playSound(inputKey04);
           ctx.fillStyle = "white";
           ctx.fillRect(30+30*3,450,20,40);
           judge(notes4);
           break;
 
         case " ":
+          playSound(inputKey05);
           ctx.fillStyle = "blue";
           ctx.fillRect(30+30*4,450,20,40);
           judge(notes5);
           break;
     
         case "j":
+          playSound(inputKey06);
           ctx.fillStyle = "white";
           ctx.fillRect(30+30*5,450,20,40);
           judge(notes6);
           break;
 
         case "k":
+          playSound(inputKey07);
           ctx.fillStyle = "blue";
           ctx.fillRect(30+30*6,450,20,40);
           judge(notes7);
           break;
 
         case "l":
+          playSound(inputKey08);
           ctx.fillStyle = "white";
           ctx.fillRect(30+30*7,450,20,40);
           judge(notes8);
