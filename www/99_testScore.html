@@ -20,8 +20,7 @@
 
   <canvas id="cvs" width="300px" height="550px"></canvas>
   <canvas id="cvsTempo" width="100px" height="300px"></canvas>
-  <input type="button" value="PLAY" onclick="OnButtonClick();"/>
-  <audio id="mainClickSound" preload="auto"><source src="music/mainClick.mp3" type="audio/mp3" muted controls></audio>
+  <audio id="mainClickSound" preload="auto"><source src="music/hihat_tito.mp3" type="audio/mp3" muted controls></audio>
   <audio id="subClickSound" preload="auto"><source src="music/subClick.mp3" type="audio/mp3" muted controls></audio>
   <audio id="inputKey01" preload="auto"><source src="music/01_bass.mp3" type="audio/mp3" muted controls></audio>
   <audio id="inputKey02" preload="auto"><source src="music/02_snare_small.mp3" type="audio/mp3" muted controls></audio>
@@ -49,17 +48,8 @@
     xhr.send();
   }
   loadfile();
-  function OnButtonClick(){
-    mainClickSound.muted = false;
-    subClickSound.muted = false;
-    inputKey01.muted = false;
-    inputKey02.muted = false;
-    inputKey03.muted = false;
-    inputKey04.muted = false;
-  }
 
   function main(){
-
     //canvasの宣言
     const canvas = document.getElementById("cvs");
     const ctx = canvas.getContext("2d");
@@ -87,7 +77,7 @@
     let notes8 = [];
 
     let tempoCount = 0;
-    let score = -1;
+    let score = 0;
     const notesWidth = 30;
     startTime = Date.now();
     let tempoFlg = false;
@@ -100,14 +90,25 @@
     let milliSecDiff = "±milliSecond";
     //判定フォント
     ctx.font = "20px Meiryo";
+    setVolume(); 
+    function setVolume(){
+      mainClickSound.volume=0.5;
+      inputKey01.volume=1.0;
+      inputKey02.volume=0.3;
+      inputKey03.volume=0.3;
+      inputKey04.volume=0.3;
+      inputKey05.volume=0.3;
+      inputKey06.volume=0.3;
+      inputKey07.volume=0.3;
+      inputKey08.volume=0.3;
+    }
     update();
-
     function playSound(sound){
       sound.currentTime = 0;
       let promise = sound.play();
       if (promise !== undefined) {
         promise.then(_ => {
-          console.log("ok");
+          //console.log("ok");
         }).catch(error => {
           console.log("promise error");
         });
@@ -206,7 +207,7 @@
         drawNotes(notes7,7);
         drawNotes(notes8,8);
 
-       requestAnimationFrame(update);
+        requestAnimationFrame(update);
     }
 
     function drawNotes(notes,index){
@@ -265,7 +266,6 @@
     function judge(notes){
       if(notes.length >= 1){
         milliSecDiff = Date.now() - notes[0] - 4000;
-        console.log("milliSecDiff => " +milliSecDiff);
         if(Math.abs(milliSecDiff) <= 16*2){
           score = score + 2;
           result = "GREAT";
