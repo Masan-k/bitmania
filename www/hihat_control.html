@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>bitmania</title>
+  <style>
+    .custom-input{width: 50px;}
+    body{
+     font-family: Arial,sans-serif;
+     background-color: #999999;
+    }
+    
+    label{
+      font-size: 20px;
+    }
+    //p{font-size: 30px;}
+    input[type="text"]{
+      font-size: 20px;
+    }
+    input[type="button"]{
+      font-size: 20px;
+    }
+   #note{
+      font-size: 15px;
+   }
+  </style>
+
+</head>
+<body>
+  <h1>DEMO</h1>
+  <label for="txtBpm">bpm:</label>
+  <input type="text" id="txtBpm" name="txtBpm" value="60" class="custom-input" >
+  <input type="button" value="START" onclick="start()" >
+
+  <p id="pTest" style="font-size: 30px">_ _ _ _</p>
+
+  <br>
+  <audio id="hihatClose"><source src="music/05_hihat_ti.mp3" type="audio/mp3"></audio>
+  <audio id="hihatTi"><source src="music/21_hihat_ti.mp3" type="audio/mp3"></audio>
+  <audio id="hihatTii"><source src="music/22_hihat_---.mp3" type="audio/mp3"></audio>
+  <audio id="hihatTin"><source src="music/23_hihat_tin.mp3" type="audio/mp3"></audio>
+
+  <br>
+
+  <div id="note">
+    <p>ハイハットのアタック：j</p>
+    <p>ハイハットのオープン：space keyDown</p>
+    <p>ハイハットのクローズ：space keyUp</p>
+  </div>
+
+  <br>
+
+  <script>
+    let startTime;
+    let secBaseClick;
+    let countClick;
+    let countTempo;
+    function start() {
+      startTime = Date.now();
+      secBaseClick = 60/txtBpm.value;     
+      countClick = 0;
+      countTempo = 0;
+      update(); 
+    }
+    function update(){
+      let elaspsedTime = Date.now() - startTime; 
+      if(elaspsedTime/1000 > countClick * secBaseClick){
+        countTempo++;
+        countClick++; 
+
+        let workTempo = ""
+        for(let i=0; i<countTempo; i++){
+          workTempo = workTempo + "* "; 
+        } 
+        pTest.textContent = workTempo;
+        if(countTempo === 4){
+          countTempo = 0;
+        }
+      }
+     requestAnimationFrame(update);
+    }
+
+    hihatTii.loop = true;
+    let openHihat = false;
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'j') {
+        if(openHihat){
+          hihatTi.play();
+          hihatTii.play();
+        }else{
+          hihatClose.play();
+        } 
+      }
+      if (event.key === ' ') {
+        openHihat = true;
+        console.log('Key pressed:', event.key);
+      }
+     });
+    document.addEventListener('keyup', function(event) {
+      if (event.key === ' ') {
+        openHihat = false;
+        hihatTii.pause();
+        console.log('Key up:', event.key);
+      }
+    });
+  </script>
+
+</body>
+
