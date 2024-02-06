@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>bitmania</title>
+  <style>
+    .custom-input{width: 50px;}
+    body{ 
+       font-family: Arial
+       ,sans-serif;
+       background-color: #333;
+    }
+    #pTempoMark{
+       font-size: 30px;
+
+    }
+  </style>
+
+</head>
+<body>
+  <h1>DEMO</h1>
+  <label for="txtBpm">bpm:</label>
+  <input type="text" id="txtBpm" name="txtBpm" value="60" class="custom-input" >
+  <input type="button" value="START" onclick="start()" >
+
+  <p id="pTempoMark">----</p>
+
+  <p id="pTest">test</p>
+  <canvas id="cvs" width="300px" height="550px"></canvas>
+  <audio id="mainClickSound" preload="auto"><source src="music/05_hihat_ti.mp3" type="audio/mp3" muted controls></audio>
+  <audio id="subClickSound" preload="auto"><source src="music/99_hihat_tito.mp3" type="audio/mp3" muted controls></audio>
+  <audio id="inputKey01" preload="auto"><source src="music/01_bass.mp3" type="audio/mp3" muted controls></audio>
+  <audio id="inputKey02" preload="auto"><source src="music/02_snare_small.mp3" type="audio/mp3" muted controls></audio>
+  <audio id="inputKey03" preload="auto"><source src="music/03_snare_normal.mp3" type="audio/mp3" muted controls></audio>
+  <audio id="inputKey04" preload="auto"><source src="music/04_snare_side.mp3" type="audio/mp3" muted controls></audio>
+  <audio id="inputKey05" preload="auto"><source src="music/05_hihat_ti.mp3" type="audio/mp3" muted controls></audio>
+  <audio id="inputKey06" preload="auto"><source src="music/06_lowtom.mp3" type="audio/mp3" muted controls></audio>
+  <audio id="inputKey07" preload="auto"><source src="music/07_hitom.mp3" type="audio/mp3" muted controls></audio>
+  <audio id="inputKey08" preload="auto"><source src="music/08_floortom.mp3" type="audio/mp3" muted controls></audio>
+
+  <script>
+    let tempoText;
+    const NOTES_WIDTH = 30;
+    pageLoad();
+   function playSound(sound){
+      sound.currentTime = 0;
+      let promise = sound.play();
+      if (promise !== undefined) {
+        promise.then(_ => {
+          //console.log("ok");
+        }).catch(error => {
+          console.log("promise error");
+        });
+      }
+   }
+    function pageLoad(){
+      drawFrame();
+      setTempoText();
+      setVolume();
+      function setTempoText(){
+        xhr = new XMLHttpRequest();
+        xhr.open('GET', "http://localhost/bitmania/score/01_8beat.txt", true);
+        //xhr.open('GET', "http://localhost/bitmania/score/02_8beat.txt", true);
+        //xhr.open('GET', "http://localhost/bitmania/score/03_8beat.txt", true);
+        //xhr.open('GET', "http://localhost/bitmania/score/04_8beat.txt", true);
+         xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+              loadText = xhr.responseText;
+              tempoText = loadText.split("\n");
+            }
+        };
+        xhr.send();
+      }
+      function setVolume(){
+        mainClickSound.volume=0.5;
+        inputKey01.volume=1.0;
+        inputKey02.volume=0.3;
+        inputKey03.volume=0.3;
+        inputKey04.volume=0.3;
+        inputKey05.volume=0.3;
+        inputKey06.volume=0.3;
+        inputKey07.volume=0.3;
+        inputKey08.volume=0.3;
+      }
+    }
+    function drawFrame(){
+      const canvas = document.getElementById("cvs");
+      const ctx = canvas.getContext("2d");
+
+      ctx.fillStyle = "black";
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+
+      ctx.fillStyle = "black";
+      ctx.fillRect(24,29,241,421);
+      ctx.strokeStyle = "grey"
+      ctx.lineWidth = 0.5;
+      ctx.strokeRect(25,30,240,420);
+
+      for(let i = 1; i<8; i++){
+        ctx.beginPath();
+        ctx.moveTo(25+NOTES_WIDTH*i,30+420);
+        ctx.lineTo(25+NOTES_WIDTH*i,30);
+        ctx.stroke();
+      }
+    }
+    function start(){
+      let startTime = Date.now();
+      let secBaseClick = 60/txtBpm.value;     
+      let countClick = 0;
+      let countTempo = 0;
+
+      let notes1 = [];
+      let notes2 = [];
+      let notes3 = [];
+      let notes4 = [];
+      let notes5 = [];
+      let notes6 = [];
+      let notes7 = [];
+      let notes8 = [];
+
+      const canvas = document.getElementById("cvs");
+      const ctx = canvas.getContext("2d");
+
+      let score = 0;
+      let result = "";
+      let milliSecDiff = "±milliSecond";
+
+
+      update(); 
+      function update(){
+        let elaspsedTime = Date.now() - startTime; 
+        if(elaspsedTime/1000 > countClick * secBaseClick){
+
+          tempoText.forEach((dataRow) => {
+            if(dataRow != ""){
+              tempo = dataRow.substring(countClick,countClick+1);
+              //tempoFlg = true;
+              switch (tempo){
+                case "1":notes1.push(Date.now());break;
+                case "2":notes2.push(Date.now());break;
+                case "3":notes3.push(Date.now());break;
+                case "4":notes4.push(Date.now());break;
+                case "5":notes5.push(Date.now());break;
+                case "6":notes6.push(Date.now());break;
+                case "7":notes7.push(Date.now());break;
+                case "8":notes8.push(Date.now());break;
+              }
+            }
+          });
+
+          countTempo++;
+          countClick++; 
+          console.log(countClick);
+
+          playSound(subClickSound);
+          drawJudge()
+          function drawJudge(){
+            ctx.fillStyle = "black";
+            ctx.fillRect(0,canvas.height -55,canvas.width,55);
+            switch (result){
+              case "GREAT": ctx.fillStyle = "orange";  break;
+              case "GOOD":  ctx.fillStyle = "yellow"; break;
+              case "BAD":   ctx.fillStyle = "red";    break;
+              case "POOR":  ctx.fillStyle = "purple"; break;
+              default:      ctx.fillStyle = "white";
+            }
+            ctx.fillText(result + "(" + milliSecDiff + ")",20,canvas.height -15);
+          }
+
+     
+          let workTempo = ""
+          for(let i=0; i<countTempo; i++){
+            workTempo = workTempo + "*"; 
+          } 
+          pTempoMark.textContent = workTempo;
+          if(countTempo === 4){
+            countTempo = 0;
+          }
+        }
+        //delete notes
+        ctx.fillStyle = "black";
+        ctx.fillRect(25,30,420,419);
+        //ctx.fillRect(25+NOTES_WIDTH,30,30,419);
+        //ctx.fillRect(25+NOTES_WIDTH*2,30,30,419);
+
+        drawFrame();
+
+        //draw notes
+        drawNotes(notes1,1);
+        drawNotes(notes2,2);
+        drawNotes(notes3,3);
+        drawNotes(notes4,4);
+        drawNotes(notes5,5);
+        drawNotes(notes6,6);
+        drawNotes(notes7,7);
+        drawNotes(notes8,8);
+
+        requestAnimationFrame(update);
+      }
+      function drawNotes(notes,index){
+        notes.forEach((n) => {
+          let notesPos=(Date.now()-n)/1000*105;
+          if(notesPos >= 415){
+            // 入力キーを上書きしてしまうため何もしない 
+          }else{ 
+            ctx.beginPath();
+            ctx.lineWidth = 2; 
+            ctx.moveTo(25+NOTES_WIDTH*(index-1),32+notesPos);
+            ctx.lineTo(25+NOTES_WIDTH*(index-1)+NOTES_WIDTH,32+notesPos);
+
+            switch (index){
+              case 1:
+                ctx.strokeStyle = "red";
+                break;
+              case 2:
+              case 4:
+              case 6:
+              case 8:
+                ctx.strokeStyle = "white";
+                break;
+              case 3:
+              case 5:
+              case 7:
+                ctx.strokeStyle = "blue";
+                break;
+            }
+            ctx.stroke();
+          }
+        });
+      }
+   } 
+ </script>
+
+</body>
+
