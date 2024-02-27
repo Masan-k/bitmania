@@ -40,9 +40,12 @@
 
   <script>
     let tempoText;
+    let beforeUpdateId = null;
+
     const NOTES_WIDTH = 30;
     pageLoad();
-   function playSound(sound){
+
+    function playSound(sound){
       sound.currentTime = 0;
       let promise = sound.play();
       if (promise !== undefined) {
@@ -125,7 +128,10 @@
       let result = "";
       let milliSecDiff = "±milliSecond";
 
-
+      if(update != null){
+        window.cancelAnimationFrame(beforeUpdateId);
+      }
+      
       update(); 
       function update(){
         let elaspsedTime = Date.now() - startTime; 
@@ -195,7 +201,7 @@
         drawNotes(notes7,7);
         drawNotes(notes8,8);
 
-        requestAnimationFrame(update);
+        beforeUpdateId = requestAnimationFrame(update);
       }
       function drawNotes(notes,index){
         notes.forEach((n) => {
