@@ -8,7 +8,7 @@
     body{ 
        font-family: Arial
        ,sans-serif;
-       background-color: #333;
+       background-color: #EEE;
     }
     #pTempoMark{
        font-size: 30px;
@@ -18,7 +18,7 @@
 
 </head>
 <body>
-  <h1>DEMO</h1>
+  <h1>BPM CHANGE</h1>
   <label for="txtBpm">bpm:</label>
   <input type="text" id="txtBpm" name="txtBpm" value="60" class="custom-input" >
   <input type="button" value="START" onclick="start()" >
@@ -62,7 +62,7 @@
       setVolume();
       function setTempoText(){
         xhr = new XMLHttpRequest();
-        xhr.open('GET', "http://localhost/bitmania/score/01_8beat.txt", true);
+        xhr.open('GET', "./score/01_8beat.txt", true);
         //xhr.open('GET', "http://localhost/bitmania/score/02_8beat.txt", true);
         //xhr.open('GET', "http://localhost/bitmania/score/03_8beat.txt", true);
         //xhr.open('GET', "http://localhost/bitmania/score/04_8beat.txt", true);
