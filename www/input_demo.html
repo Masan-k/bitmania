@@ -9,11 +9,13 @@
   </style>
 </head>
 <body>
-  <h1>DEMO</h1>
+  <h1>INPUT DEMONSTRATION</h1>
   <form>
+    <!--
     <label for="txtBpm">bpm:</label>
     <input type="text" id="txtBpm" name="txtBpm" value="60" class="custom-input" >
     <input type="submit" value="submit">
+    -->
   </form>
 
   <canvas id="cvs" width="300px" height="500px"></canvas>
@@ -22,6 +24,26 @@
 
   const canvas = document.getElementById("cvs");
   const ctx = canvas.getContext("2d");
+
+  //フレームの描画(縦線)
+  function drawInFrame(){
+    ctx.strokeStyle = "grey";
+    ctx.lineWidth = 0.7;
+    for(let i = 1; i<8; i++){
+      ctx.beginPath();
+      ctx.moveTo(25+30*i,30+420);
+      ctx.lineTo(25+30*i,30);
+      ctx.stroke();
+    }
+  }
+
+  //前回描画の削除
+  function notesClear(keyNum){
+    ctx.fillStyle = "black";
+    ctx.fillRect(25+(30*(keyNum-1))+1,30+1,30-2,420-2);
+
+  }
+
 
   //canvas全体
   ctx.fillStyle = "black";
@@ -46,20 +68,14 @@
   ctx.strokeStyle = "white";
   ctx.strokeRect(30+30*7,canvas.height -50,20,40);
 
-  //フレームの描画
+  //フレームの描画(外周）
   ctx.strokeStyle = "grey";
   ctx.lineWidth = 0.5;
   ctx.strokeRect(25,30,240,420);
+  drawInFrame();
 
-  for(let i = 1; i<8; i++){
-    ctx.beginPath();
-    ctx.moveTo(25+30*i,30+420);
-    ctx.lineTo(25+30*i,30);
-    ctx.stroke();
-  }
-  
-  document.addEventListener('keydown', keydown_event);
   //document.addEventListener('keypress', keypress_event);
+  document.addEventListener('keydown', keydown_event);
   document.addEventListener('keyup', keyup_event);
 
   let loopStart = false;
@@ -80,10 +96,7 @@
   let input8 = []; 
   const speed = 2;
   const drawNotes1=()=>{
-    //前回描画の削除
-    ctx.fillStyle = "black";
-    ctx.fillRect(25+1,30+1,30-2,420-2);
-    
+    notesClear(1);
     input1.forEach((item, index) =>{
       if (item <=420-3){
         ctx.beginPath();
@@ -102,16 +115,12 @@
       requestAnimationFrame(drawNotes1);
     }else{
       loopStart = false;
-      //前回描画の削除
-      ctx.fillStyle = "black";
-      ctx.fillRect(25+1,30+1,30-2,420-2);
+      notesClear(1);
      }
   }
   const drawNotes2=()=>{
-    //前回描画の削除
-    ctx.fillStyle = "black";
-    ctx.fillRect(25+30+1,30+1,30-2,420-2);
-    
+    notesClear(2);
+
     input2.forEach((item, index) =>{
       if (item <=420-3){
         ctx.beginPath();
@@ -130,16 +139,12 @@
       requestAnimationFrame(drawNotes2);
     }else{
       loopStart2 = false;
-      //前回描画の削除
-      ctx.fillStyle = "black";
-      ctx.fillRect(25+30+1,30+1,30-2,420-2);
+      notesClear(2);
      }
   }
   const drawNotes3=()=>{
-    //前回描画の削除
-    ctx.fillStyle = "black";
-    ctx.fillRect(25+30*2+1,30+1,30-2,420-2);
-    
+    notesClear(3);
+
     input3.forEach((item, index) =>{
       if (item <=420-3){
         ctx.beginPath();
@@ -158,16 +163,11 @@
       requestAnimationFrame(drawNotes3);
     }else{
       loopStart3 = false;
-      //前回描画の削除
-      ctx.fillStyle = "black";
-      ctx.fillRect(25+30*2+1,30+1,30-2,420-2);
-     }
+      notesClear(3);
+    }
   }
   const drawNotes4=()=>{
-    //前回描画の削除
-    ctx.fillStyle = "black";
-    ctx.fillRect(25+30*3+1,30+1,30-2,420-2);
-    
+    notesClear(4);
     input4.forEach((item, index) =>{
       if (item <=420-3){
         ctx.beginPath();
@@ -186,16 +186,11 @@
       requestAnimationFrame(drawNotes4);
     }else{
       loopStart4 = false;
-      //前回描画の削除
-      ctx.fillStyle = "black";
-      ctx.fillRect(25+30*3+1,30+1,30-2,420-2);
-     }
+      notesClear(4);
+    }
   }
   const drawNotes5=()=>{
-    //前回描画の削除
-    ctx.fillStyle = "black";
-    ctx.fillRect(25+30*4+1,30+1,30-2,420-2);
-    
+    notesClear(5);
     input5.forEach((item, index) =>{
       if (item <=420-3){
         ctx.beginPath();
@@ -214,16 +209,11 @@
       requestAnimationFrame(drawNotes5);
     }else{
       loopStart5 = false;
-      //前回描画の削除
-      ctx.fillStyle = "black";
-      ctx.fillRect(25+30*4+1,30+1,30-2,420-2);
+      notesClear(5);
      }
   }
   const drawNotes6=()=>{
-    //前回描画の削除
-    ctx.fillStyle = "black";
-    ctx.fillRect(25+30*5+1,30+1,30-2,420-2);
-    
+    notesClear(6);
     input6.forEach((item, index) =>{
       if (item <=420-3){
         ctx.beginPath();
@@ -242,16 +232,12 @@
       requestAnimationFrame(drawNotes6);
     }else{
       loopStart6 = false;
-      //前回描画の削除
-      ctx.fillStyle = "black";
-      ctx.fillRect(25+30*5+1,30+1,30-2,420-2);
+      notesClear(6);
      }
   }
+
   const drawNotes7=()=>{
-    //前回描画の削除
-    ctx.fillStyle = "black";
-    ctx.fillRect(25+30*6+1,30+1,30-2,420-2);
-    
+    notesClear(7);
     input7.forEach((item, index) =>{
       if (item <=420-3){
         ctx.beginPath();
@@ -270,16 +256,11 @@
       requestAnimationFrame(drawNotes7);
     }else{
       loopStart7 = false;
-      //前回描画の削除
-      ctx.fillStyle = "black";
-      ctx.fillRect(25+30*6+1,30+1,30-2,420-2);
-     }
+      notesClear(7);
+    }
   }
   const drawNotes8=()=>{
-    //前回描画の削除
-    ctx.fillStyle = "black";
-    ctx.fillRect(25+30*7+1,30+1,30-2,420-2);
-    
+    notesClear(8);
     input8.forEach((item, index) =>{
       if (item <=420-3){
         ctx.beginPath();
@@ -298,11 +279,10 @@
       requestAnimationFrame(drawNotes8);
     }else{
       loopStart8 = false;
-      //前回描画の削除
-      ctx.fillStyle = "black";
-      ctx.fillRect(25+30*7+1,30+1,30-2,420-2);
+      notesClear(8);
      }
   }
+
   function keydown_event(e){
     if(e.key == "Shift"){
       ctx.fillStyle = "red";
@@ -313,9 +293,11 @@
         drawNotes1();
       }
     }
+
     if(e.keyCode === 32){
       e.preventDefault();
     }
+
     switch (e.key.toLowerCase()){
       case "z":
         ctx.fillStyle = "white";
