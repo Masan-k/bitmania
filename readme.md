@@ -1,14 +1,14 @@
 # bitmania
 
 ## 概要
-音ゲーのスコアを上げる為のスクリプト  
-https://masan-k.github.io/bitmania/
+音楽ゲームシュミレーター  
+https://masan-k.github.io/bitmania/www/index.html
 
 
 ## 前提
 入力は8つ（7鍵盤＋皿を想定）
 
-## ゲームモード
+## ゲームモード(検討中)
 * demo
 キーボード入力結果を画面に表示する
 
