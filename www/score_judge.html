@@ -20,8 +20,8 @@
 
   <canvas id="cvs" width="300px" height="550px"></canvas>
   <canvas id="cvsTempo" width="100px" height="300px"></canvas>
-  <audio id="mainClickSound" preload="auto"><source src="./music/hihat_tito.mp3" type="audio/mp3" muted controls></audio>
-  <audio id="subClickSound" preload="auto"><source src="./music/subClick.mp3" type="audio/mp3" muted controls></audio>
+  <audio id="mainClickSound" preload="auto"><source src="./music/99_hihat_tito.mp3" type="audio/mp3" muted controls></audio>
+  <audio id="subClickSound" preload="auto"><source src="./music/99_hihat_tito.mp3" type="audio/mp3" muted controls></audio>
   <audio id="inputKey01" preload="auto"><source src="./music/01_bass.mp3" type="audio/mp3" muted controls></audio>
   <audio id="inputKey02" preload="auto"><source src="./music/02_snare_small.mp3" type="audio/mp3" muted controls></audio>
   <audio id="inputKey03" preload="auto"><source src="./music/03_snare_normal.mp3" type="audio/mp3" muted controls></audio>
@@ -93,9 +93,9 @@
     setVolume(); 
     function setVolume(){
       mainClickSound.volume=0.5;
-      inputKey01.volume=1.0;
+      inputKey01.volume=0.3;
       inputKey02.volume=0.3;
-      inputKey03.volume=0.3;
+      inputKey03.volume=0.2;
       inputKey04.volume=0.3;
       inputKey05.volume=0.3;
       inputKey06.volume=0.3;
