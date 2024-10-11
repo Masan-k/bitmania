@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Basic HTML Template</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+<title>Basic HTML Template</title>
   <style>
     /* CSS Styles */
     body {
@@ -23,34 +24,33 @@
       padding: 20px;
       background-color: #fff;
     }
-    li {
-      padding-bottom: 15px;
-    }
   </style>
 </head>
 <body>
-
   <!-- Header Section -->
   <header>
     <h1>bitmania</h1>
   </header>
-
   <!-- Main Content -->
   <main>
     <h2></h2>
-    <ul>
-      <li><a href="./input_demo.html">入力内容の表示する</a></li>
-      <li><a href="./bpm_change.html">ノーツを表示する・BPM変更可</a></li>
-      <li><a href="./hihat_control.html">ハイハットのオープンクローズ処理検証</a></li>
-      <li><a href="./score_judge.html">ノーツの判定検証</a></li>
-      <li><a href="./practice.html">課題曲の練習</a></li>
-    </ul>
+    <dl class="row">
+      <dt class="col-sm-3"><li><a href="./input_demo.html">input_demo.html</a></li></dt>
+      <dd class="col-sm-9">入力したキーをノーツとして表示する</dd>
+      <dt class="col-sm-3"><li><a href="./hihat_control.html">hihat_control.html</a></li></dt>
+      <dd class="col-sm-9">ハイハットのオープンクローズ音の制御検証</dd>
+      <dt class="col-sm-3"><li><a href="./score_judge.html">score_judge.html</a></li></dt>
+      <dd class="col-sm-9">ゲームデモ画面、譜面固定、判定有り</dd>
+      <dt class="col-sm-3"><li><a href="./practice.html">practice.html</a></li></dt>
+      <dd class="col-sm-9">ゲームデモ画面、譜面変更可</dd>
+    </dl>
   </main>
 
   <!-- Footer Section -->
   <footer>
     <p>&copy; 2024 My Website. All rights reserved.</p>
   </footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 
 </body>
 </html>
