@@ -59,24 +59,23 @@
         });
       }
    }
-    function pageLoad(loadFileName){
+    async function pageLoad(loadFileName){
       drawFrame();
-      setTempoText();
-      setVolume();
-      function setTempoText(){
+      mainClickSound.volume=0.5;
+      return new Promise((resolve, reject)=>{
         xhr = new XMLHttpRequest();
         xhr.open('GET', "./score/" + loadFileName, true);
-         xhr.onreadystatechange = function () {
+        xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
               loadText = xhr.responseText;
               tempoText = loadText.split("\n");
+              resolve();
             }
         };
         xhr.send();
-      }
-      function setVolume(){
-        mainClickSound.volume=0.5;
-     }
+      })
+      //function setVolume(){
+      //}
     }
     function drawFrame(){
       const canvas = document.getElementById("cvs");
@@ -98,12 +97,12 @@
         ctx.stroke();
       }
     }
-    function start(){
+    async function start(){
 
       // 選択されたテキストを取得
       const selectElement = document.getElementById("cmbScore");
       const selectedText = selectElement.options[selectElement.selectedIndex].text;
-      pageLoad(selectedText);
+      await pageLoad(selectedText);
 
       document.addEventListener('keydown', keydown_event);
       document.addEventListener('keyup', keyup_event);
